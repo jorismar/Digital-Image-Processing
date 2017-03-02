@@ -76,7 +76,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         selector_band_r_mono = new javax.swing.JRadioButton();
-        button_laplaciano_filter = new javax.swing.JToggleButton();
+        button_laplaciano_filter = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         button_thresholding_value = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
@@ -90,7 +90,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         selector_rgb_space = new javax.swing.JRadioButton();
         jSlider4 = new javax.swing.JSlider();
-        button_custom_filter = new javax.swing.JToggleButton();
+        button_custom_filter = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -276,6 +276,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         button_custom_filter.setForeground(new java.awt.Color(51, 51, 51));
         button_custom_filter.setText("Custom");
         button_custom_filter.setEnabled(false);
+        button_custom_filter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_custom_filterActionPerformed(evt);
+            }
+        });
 
         jLabel14.setForeground(new java.awt.Color(51, 51, 51));
         jLabel14.setText("Mediana");
@@ -869,18 +874,27 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private void item_salvar_comoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salvar_comoActionPerformed
         window_save_as.setTitle("Salvar como");
         window_save_as.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        window_save_as.setLocationRelativeTo(null);
         window_save_as.setVisible(true);
     }//GEN-LAST:event_item_salvar_comoActionPerformed
 
     private void item_openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_openActionPerformed
         window_open.setTitle("Abrir");
         window_open.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        window_open.setLocationRelativeTo(null);
         window_open.setVisible(true);
     }//GEN-LAST:event_item_openActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
 
     }//GEN-LAST:event_formWindowClosed
+
+    private void button_custom_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_custom_filterActionPerformed
+        window_mask.setTitle("Mask");
+        window_mask.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        window_mask.setLocationRelativeTo(null);
+        window_mask.setVisible(true);
+    }//GEN-LAST:event_button_custom_filterActionPerformed
     
     private void processImage(DigitalProcess process, Object arg) {
         //new Thread() {
@@ -1256,7 +1270,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.slider_median_filter.setEnabled(enable);
         this.button_sobel.setEnabled(enable);
         //this.button_laplaciano_filter.setEnabled(enable);
-        //this.button_custom_filter_1.setEnabled(enable);
+        this.button_custom_filter.setEnabled(enable);
         //this.button_custom_filter_2.setEnabled(enable);
         this.button_negative.setEnabled(enable);
         this.button_apply.setEnabled(enable);
@@ -1326,8 +1340,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_apply;
-    private javax.swing.JToggleButton button_custom_filter;
-    private javax.swing.JToggleButton button_laplaciano_filter;
+    private javax.swing.JButton button_custom_filter;
+    private javax.swing.JButton button_laplaciano_filter;
     private javax.swing.JButton button_negative;
     private javax.swing.JButton button_revert;
     private javax.swing.JButton button_sobel;
@@ -1427,5 +1441,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
     // Extern Windows
     private final SaveWindow window_save_as = new SaveWindow();
     private final OpenWindow window_open = new OpenWindow();
+    private final MaskWindow window_mask = new MaskWindow();
     public static ApplicationWindow window_application;
 }

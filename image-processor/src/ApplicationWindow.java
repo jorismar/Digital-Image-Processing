@@ -90,7 +90,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         selector_rgb_space = new javax.swing.JRadioButton();
         jSlider4 = new javax.swing.JSlider();
-        button_custom_filter_1 = new javax.swing.JToggleButton();
+        button_custom_filter = new javax.swing.JToggleButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -100,7 +100,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         input_thresholding_value = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        button_custom_filter_2 = new javax.swing.JToggleButton();
         slider_median_filter = new javax.swing.JSlider();
         slider_add_brightness = new javax.swing.JSlider();
         slider_mult_brightness = new javax.swing.JSlider();
@@ -134,7 +133,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Processador Digital de Imagem");
-        setMinimumSize(new java.awt.Dimension(1214, 650));
+        setMinimumSize(new java.awt.Dimension(1024, 750));
+        setPreferredSize(new java.awt.Dimension(1024, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -158,9 +158,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
         );
         panel_presentation_imageLayout.setVerticalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 636, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        selector_band_g_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_g_mono.setText("G");
         selector_band_g_mono.setEnabled(false);
         selector_band_g_mono.addActionListener(new java.awt.event.ActionListener() {
@@ -169,14 +170,18 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel11.setForeground(new java.awt.Color(51, 51, 51));
         jLabel11.setText("M");
 
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("G");
         jLabel5.setEnabled(false);
 
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("R");
         jLabel4.setEnabled(false);
 
+        selector_band_r_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_r_mono.setText("R");
         selector_band_r_mono.setEnabled(false);
         selector_band_r_mono.addActionListener(new java.awt.event.ActionListener() {
@@ -185,12 +190,15 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
+        button_laplaciano_filter.setForeground(new java.awt.Color(51, 51, 51));
         button_laplaciano_filter.setText("Laplaciano");
         button_laplaciano_filter.setEnabled(false);
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
         jLabel7.setText("Brilho");
 
+        button_thresholding_value.setForeground(new java.awt.Color(51, 51, 51));
         button_thresholding_value.setText("Valor");
         button_thresholding_value.setEnabled(false);
         button_thresholding_value.addActionListener(new java.awt.event.ActionListener() {
@@ -200,10 +208,13 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
 
         jLabel12.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(51, 51, 51));
         jLabel12.setText("Filtros");
 
+        jLabel9.setForeground(new java.awt.Color(51, 51, 51));
         jLabel9.setText("Multiplicativo");
 
+        selector_yiq_space.setForeground(new java.awt.Color(51, 51, 51));
         selector_yiq_space.setText("YIQ");
         selector_yiq_space.setEnabled(false);
         selector_yiq_space.addActionListener(new java.awt.event.ActionListener() {
@@ -213,11 +224,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Bandas");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Espaço de Cores");
 
+        selector_band_b_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_b_mono.setText("B");
         selector_band_b_mono.setEnabled(false);
         selector_band_b_mono.addActionListener(new java.awt.event.ActionListener() {
@@ -242,9 +256,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("B");
         jLabel6.setEnabled(false);
 
+        selector_rgb_space.setForeground(new java.awt.Color(51, 51, 51));
         selector_rgb_space.setText("RGB");
         selector_rgb_space.setEnabled(false);
         selector_rgb_space.addActionListener(new java.awt.event.ActionListener() {
@@ -257,14 +273,18 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jSlider4.setValue(127);
         jSlider4.setEnabled(false);
 
-        button_custom_filter_1.setText("Filtro1");
-        button_custom_filter_1.setEnabled(false);
+        button_custom_filter.setForeground(new java.awt.Color(51, 51, 51));
+        button_custom_filter.setText("Custom");
+        button_custom_filter.setEnabled(false);
 
+        jLabel14.setForeground(new java.awt.Color(51, 51, 51));
         jLabel14.setText("Mediana");
 
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Monocromático");
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(51, 51, 51));
         jLabel10.setText("Limiarização");
 
         jSlider5.setMaximum(255);
@@ -275,10 +295,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         input_thresholding_value.setText("0");
         input_thresholding_value.setEnabled(false);
 
+        jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Aditivo");
-
-        button_custom_filter_2.setText("Filtro2");
-        button_custom_filter_2.setEnabled(false);
 
         slider_median_filter.setMaximum(30);
         slider_median_filter.setMinimum(1);
@@ -331,31 +349,34 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jSlider1.setValue(127);
         jSlider1.setEnabled(false);
 
+        button_thresholding_average.setForeground(new java.awt.Color(51, 51, 51));
         button_thresholding_average.setText("Média");
         button_thresholding_average.setEnabled(false);
 
+        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("Média");
 
-        label_add_brightness_value.setForeground(new java.awt.Color(102, 102, 102));
+        label_add_brightness_value.setForeground(new java.awt.Color(51, 51, 51));
         label_add_brightness_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_add_brightness_value.setText("" + slider_add_brightness.getValue());
         label_add_brightness_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        label_mult_brightness_value.setForeground(new java.awt.Color(102, 102, 102));
+        label_mult_brightness_value.setForeground(new java.awt.Color(51, 51, 51));
         label_mult_brightness_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_mult_brightness_value.setText("" + slider_mult_brightness.getValue());
         label_mult_brightness_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        label_average_filter_value.setForeground(new java.awt.Color(102, 102, 102));
+        label_average_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_average_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_average_filter_value.setText("" + slider_average_filter.getValue());
         label_average_filter_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        label_median_filter_value.setForeground(new java.awt.Color(102, 102, 102));
+        label_median_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_median_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_median_filter_value.setText("" + slider_median_filter.getValue());
         label_median_filter_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
+        button_sobel.setForeground(new java.awt.Color(51, 51, 51));
         button_sobel.setText("Sobel");
         button_sobel.setEnabled(false);
         button_sobel.addActionListener(new java.awt.event.ActionListener() {
@@ -364,6 +385,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
+        button_negative.setForeground(new java.awt.Color(51, 51, 51));
         button_negative.setText("Negativo");
         button_negative.setEnabled(false);
         button_negative.addActionListener(new java.awt.event.ActionListener() {
@@ -372,6 +394,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
+        button_apply.setForeground(new java.awt.Color(51, 51, 51));
         button_apply.setText("Aplicar");
         button_apply.setEnabled(false);
         button_apply.addActionListener(new java.awt.event.ActionListener() {
@@ -380,6 +403,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
+        button_revert.setForeground(new java.awt.Color(51, 51, 51));
         button_revert.setText("Reverter");
         button_revert.setEnabled(false);
         button_revert.addActionListener(new java.awt.event.ActionListener() {
@@ -393,47 +417,52 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator3)
-                    .addComponent(jLabel10)
-                    .addComponent(jSeparator1)
-                    .addComponent(jSeparator5)
-                    .addComponent(jSeparator4)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_sobel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(button_laplaciano_filter)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(button_custom_filter_1))
                     .addComponent(jLabel7)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_negative)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(button_custom_filter_2))
                     .addComponent(jLabel12)
                     .addComponent(jSeparator2)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(40, 40, 40)
+                        .addComponent(slider_add_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(label_add_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(6, 6, 6)
+                        .addComponent(slider_mult_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
+                        .addComponent(label_mult_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(18, 18, 18)
+                        .addComponent(slider_average_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(label_average_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(selector_rgb_space)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(selector_yiq_space))
-                    .addComponent(jLabel2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSlider5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_apply, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(button_revert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(button_sobel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(button_laplaciano_filter)
+                        .addGap(4, 4, 4)
+                        .addComponent(button_custom_filter))
+                    .addComponent(button_negative)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel14)
+                        .addGap(4, 4, 4)
+                        .addComponent(slider_median_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(label_median_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -442,7 +471,22 @@ public class ApplicationWindow extends javax.swing.JFrame {
                         .addComponent(button_thresholding_value)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(button_thresholding_average, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1)
+                    .addComponent(jSeparator3)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(button_apply, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(button_revert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel10)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSlider5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator1)
+                    .addComponent(jSeparator5)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -451,52 +495,23 @@ public class ApplicationWindow extends javax.swing.JFrame {
                         .addComponent(selector_band_g_mono)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(selector_band_b_mono))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel14))
-                        .addGap(9, 9, 9)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(slider_average_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(slider_median_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(label_median_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(label_average_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(slider_add_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(slider_mult_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(3, 3, 3)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label_mult_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label_add_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(2, 2, 2)))
-                .addContainerGap())
+                    .addComponent(jSeparator4))
+                .addGap(2, 2, 2))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selector_rgb_space)
                     .addComponent(selector_yiq_space))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(selector_band_r_mono)
@@ -514,9 +529,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -532,18 +547,18 @@ public class ApplicationWindow extends javax.swing.JFrame {
                             .addComponent(slider_mult_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel10)
-                        .addGap(6, 6, 6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(input_thresholding_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(button_thresholding_value)
                             .addComponent(button_thresholding_average)))
                     .addComponent(label_mult_brightness_value))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel12)
@@ -561,21 +576,20 @@ public class ApplicationWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(button_laplaciano_filter)
-                            .addComponent(button_custom_filter_1)
+                            .addComponent(button_custom_filter)
                             .addComponent(button_sobel))
                         .addGap(0, 0, 0)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(button_custom_filter_2)
-                            .addComponent(button_negative))
+                        .addComponent(button_negative)
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(label_median_filter_value))
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(button_revert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button_apply, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+        menu_arquivo.setForeground(new java.awt.Color(51, 51, 51));
         menu_arquivo.setText("Arquivo");
 
         item_open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
@@ -609,6 +623,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         jMenuBar1.add(menu_arquivo);
 
+        menu_editar.setForeground(new java.awt.Color(51, 51, 51));
         menu_editar.setText("Editar");
 
         item_undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
@@ -651,16 +666,18 @@ public class ApplicationWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(2, 2, 2)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGap(15, 15, 15)
                 .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -1281,6 +1298,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ApplicationWindow window = new ApplicationWindow();
+                window.setLocationRelativeTo(null);
                 ApplicationWindow.window_application = window;
                 // Thread to refresh image
                 new Thread() {
@@ -1308,8 +1326,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_apply;
-    private javax.swing.JToggleButton button_custom_filter_1;
-    private javax.swing.JToggleButton button_custom_filter_2;
+    private javax.swing.JToggleButton button_custom_filter;
     private javax.swing.JToggleButton button_laplaciano_filter;
     private javax.swing.JButton button_negative;
     private javax.swing.JButton button_revert;

@@ -9,3 +9,4 @@ Compile the project [image-processor/](https://github.com/jorismar/Digital-Image
 ```
 Recommended to use NetBeans.
 ```
+[User Interface](https://github.com/jorismar/Digital-Image-Processing.git/tree/master/image-processor/interface.png)

@@ -14,22 +14,20 @@ import DigitalImageProcess.DigitalProcess;
  * @author Jorismar
  */
 public class Thresholding extends DigitalProcess {
-
     @Override
     protected int transform(BufferedImage img, int px, int py, Object arg) {
         Integer T = (Integer) arg;
 
         Color color = new Color(img.getRGB(px, py));
 
-        int R = color.getRed();
-        int G = color.getGreen();
-        int B = color.getBlue();
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
 
-        //check and set threshold T in 3 channels
-        R = R > T ? 255 : 0;
-        G = G > T ? 255 : 0;
-        B = B > T ? 255 : 0;
+        r = r > T ? T : r;
+        g = g > T ? T : g;
+        b = b > T ? T : b;
 
-        return new Color(R, G, B).getRGB();
+        return new Color(r, g, b).getRGB();
     }
 }

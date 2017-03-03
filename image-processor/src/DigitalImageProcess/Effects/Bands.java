@@ -14,7 +14,6 @@ import DigitalImageProcess.DigitalProcess;
  * @author Jorismar
  */
 public class Bands extends DigitalProcess {
-
     @Override
     protected int transform(BufferedImage img, int px, int py, Object arg) {
         Color channel = (Color) arg;

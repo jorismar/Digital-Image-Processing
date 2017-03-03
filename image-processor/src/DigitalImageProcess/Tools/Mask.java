@@ -5,6 +5,8 @@
  */
 package DigitalImageProcess.Tools;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Jorismar
@@ -62,5 +64,9 @@ public class Mask {
 
     public void setValue(int x, int y, int value) {
         this.matrix[y][x] = value;
+    }
+    
+    public void fillMask(int value) {
+        Arrays.fill(this.matrix, value);
     }
 }

@@ -5,8 +5,8 @@
  */
 package DigitalImageProcess;
 
-import DigitalImageProcess.Tools.Image;
 import java.awt.image.BufferedImage;
+import DigitalImageProcess.Tools.Image;
 
 /**
  *

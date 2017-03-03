@@ -5,10 +5,10 @@
  */
 package DigitalImageProcess.Filters;
 
-import DigitalImageProcess.DigitalProcess;
-import DigitalImageProcess.Tools.Mask;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import DigitalImageProcess.Tools.Mask;
+import DigitalImageProcess.DigitalProcess;
 
 /**
  *
@@ -17,7 +17,16 @@ import java.awt.image.BufferedImage;
 public class Correlation extends DigitalProcess {
     @Override
     protected int transform(BufferedImage img, int x, int y, Object arg) {
-        Mask mask = (Mask) arg;
+        int[] rgb = this.applyMask(img, x, y, (Mask) arg);
+        
+        rgb[0] = rgb[0] > 255 ? 255 : rgb[0] < 0 ? 0 : rgb[0];
+        rgb[1] = rgb[1] > 255 ? 255 : rgb[1] < 0 ? 0 : rgb[1];
+        rgb[2] = rgb[2] > 255 ? 255 : rgb[2] < 0 ? 0 : rgb[2];
+
+        return new Color(rgb[0], rgb[1], rgb[1]).getRGB();
+    }
+    
+    public int[] applyMask(BufferedImage img, int x, int y, Mask mask) {
         int r = 0, g = 0, b = 0;
         
         for(int my = 0, py = y - mask.getHeight() / 2; my < mask.getHeight() && py < img.getHeight(); my++, py++) {
@@ -36,10 +45,6 @@ public class Correlation extends DigitalProcess {
             }
         }
         
-        r = r > 255 ? 255 : r < 0 ? 0 : r;
-        g = g > 255 ? 255 : g < 0 ? 0 : g;
-        b = b > 255 ? 255 : b < 0 ? 0 : b;
-
-        return new Color(r, g, b).getRGB();
+        return new int[]{r, g, b};
     }
 }

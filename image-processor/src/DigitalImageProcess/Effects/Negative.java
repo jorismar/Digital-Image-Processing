@@ -7,13 +7,13 @@ package DigitalImageProcess.Effects;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import DigitalImageProcess.DigitalProcess;
 
 /**
  *
  * @author Jorismar
  */
-public class Negative extends DigitalImageProcess.DigitalProcess {
-
+public class Negative extends DigitalProcess {
     @Override
     protected int transform(BufferedImage img, int px, int py, Object arg) {
         Color color = new Color(img.getRGB(px, py));

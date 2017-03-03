@@ -29,8 +29,8 @@ public class ApplicationState {
         this.add_brightness_value = 0;
         this.mult_brightness_value = 0;
         this.thresholding_M_value = 0;
-        this.average_filter_value = 1;
-        this.median_filter_value = 1;
+        this.average_filter_value = 3;
+        this.median_filter_value = 3;
         this.image = null;
     }
     
@@ -118,7 +118,12 @@ public class ApplicationState {
         this.image = image;
     }
     
-    public void clone(ApplicationState state) {
+    public void clone(ApplicationState state) throws NullPointerException {
+        this.image = Image.clone(state.getImage());
+        
+        if(this.image == null)
+            throw new NullPointerException();
+        
         this.is_yiq = state.isYIQ();
         this.band_selected = state.getBandSelector();
         this.add_brightness_value = state.getAddBrightnessValue();
@@ -126,6 +131,5 @@ public class ApplicationState {
         this.thresholding_M_value = state.getThresholdingValue();
         this.average_filter_value = state.getAverageFilterValue();
         this.median_filter_value = state.getMedianFilterValue();
-        this.image = Image.clone(state.getImage());
     }
 }

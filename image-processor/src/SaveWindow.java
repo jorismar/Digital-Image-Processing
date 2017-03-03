@@ -8,6 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /*
@@ -27,6 +28,10 @@ public class SaveWindow extends javax.swing.JFrame {
      */
     public SaveWindow() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon("resrc/img/app_icon.png").getImage());
+        if(ApplicationWindow.current_save_dir != null)
+            window_save_file.setCurrentDirectory(ApplicationWindow.current_save_dir);
     }
 
     /**
@@ -40,7 +45,9 @@ public class SaveWindow extends javax.swing.JFrame {
 
         window_save_file = new javax.swing.JFileChooser();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Salvar como");
+        setAlwaysOnTop(true);
         setLocationByPlatform(true);
 
         window_save_file.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
@@ -66,8 +73,10 @@ public class SaveWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void window_save_fileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_window_save_fileActionPerformed
-        if(!evt.getActionCommand().equals("CancelSelection"))
+        if(!evt.getActionCommand().equals("CancelSelection")) {
             ApplicationWindow.window_application.saveAs(this.window_save_file.getSelectedFile());
+            ApplicationWindow.current_save_dir = this.window_save_file.getCurrentDirectory();
+        }
         
         this.setVisible(false);
     }//GEN-LAST:event_window_save_fileActionPerformed
@@ -102,7 +111,9 @@ public class SaveWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SaveWindow().setVisible(true);
+                SaveWindow window = new SaveWindow();
+                window.setLocationRelativeTo(null);
+                window.setVisible(true);
             }
         });
     }

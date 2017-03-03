@@ -6,11 +6,13 @@ import DigitalImageProcess.Effects.Bands;
 import DigitalImageProcess.Effects.Negative;
 import DigitalImageProcess.Effects.Thresholding;
 import DigitalImageProcess.Filters.Average;
+import DigitalImageProcess.Filters.Correlation;
 import DigitalImageProcess.Filters.Median;
 import DigitalImageProcess.Filters.SobelGradient;
 import DigitalImageProcess.Luminosity.AdditiveBrightnes;
 import DigitalImageProcess.Luminosity.MultiplicativeBrightnes;
 import DigitalImageProcess.Tools.Image;
+import DigitalImageProcess.Tools.Mask;
 import Memento.ApplicationState;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -54,6 +56,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
      */
     public ApplicationWindow() {
         initComponents();
+        try {
+            this.img_processing = ImageIO.read(new File("resrc/img/processing.png"));
+            this.setIconImage(new ImageIcon("resrc/img/app_icon.png").getImage());
+        } catch (IOException ex) {
+            this.img_processing = null;
+        }
     }
 
     /**
@@ -76,7 +84,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         selector_band_r_mono = new javax.swing.JRadioButton();
-        button_laplaciano_filter = new javax.swing.JButton();
+        button_laplaciano_filter = new javax.swing.JToggleButton();
         jLabel7 = new javax.swing.JLabel();
         button_thresholding_value = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
@@ -90,7 +98,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         selector_rgb_space = new javax.swing.JRadioButton();
         jSlider4 = new javax.swing.JSlider();
-        button_custom_filter = new javax.swing.JButton();
+        button_custom_filter = new javax.swing.JToggleButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -241,8 +249,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
 
         slider_average_filter.setMaximum(30);
-        slider_average_filter.setMinimum(1);
-        slider_average_filter.setToolTipText("???");
+        slider_average_filter.setMinimum(3);
+        slider_average_filter.setToolTipText("" + slider_average_filter.getMinimum());
         slider_average_filter.setValue(slider_average_filter.getMinimum());
         slider_average_filter.setEnabled(false);
         slider_average_filter.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -304,9 +312,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel8.setText("Aditivo");
 
         slider_median_filter.setMaximum(30);
-        slider_median_filter.setMinimum(1);
-        slider_median_filter.setValue(1);
+        slider_median_filter.setMinimum(3);
         slider_median_filter.setEnabled(false);
+        slider_median_filter.setValue(slider_median_filter.getMinimum());
         slider_median_filter.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 slider_median_filterStateChanged(evt);
@@ -326,6 +334,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         slider_add_brightness.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 slider_add_brightnessStateChanged(evt);
+            }
+        });
+        slider_add_brightness.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                slider_add_brightnessMouseDragged(evt);
             }
         });
         slider_add_brightness.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -373,12 +386,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         label_average_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_average_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_average_filter_value.setText("" + slider_average_filter.getValue());
+        label_average_filter_value.setText("" + slider_average_filter.getMinimum());
         label_average_filter_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         label_median_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_median_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_median_filter_value.setText("" + slider_median_filter.getValue());
+        label_median_filter_value.setText("" + slider_median_filter.getMinimum());
         label_median_filter_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         button_sobel.setForeground(new java.awt.Color(51, 51, 51));
@@ -718,7 +731,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         try {
             this.save();
         } catch (IOException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         }
     }//GEN-LAST:event_item_salvarActionPerformed
 
@@ -768,6 +781,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
     private void slider_add_brightnessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_add_brightnessStateChanged
         this.label_add_brightness_value.setText("" + this.slider_add_brightness.getValue());
+        this.slider_add_brightness.setToolTipText("" + this.slider_add_brightness.getValue());
         this.backupImageControler(this.add_brightness.getClass());
         this.presentation_image = this.add_brightness.apply(this.working_image, this.slider_add_brightness.getValue());
     }//GEN-LAST:event_slider_add_brightnessStateChanged
@@ -779,7 +793,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_slider_mult_brightnessStateChanged
 
     private void panel_presentation_imageAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panel_presentation_imageAncestorResized
-        this.updatePresentationProperties();
+        this.updatePresentationProperties(this.working_image);
+        this.clearImagePanel();
     }//GEN-LAST:event_panel_presentation_imageAncestorResized
 
     private void button_thresholding_valueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_thresholding_valueActionPerformed
@@ -793,11 +808,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
             this.processImage(this.thresholding, threasholding_value);
             this.current_state.setThresholdingValue(threasholding_value);
         } catch (NumberFormatException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         }
     }//GEN-LAST:event_button_thresholding_valueActionPerformed
 
     private void slider_average_filterMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_average_filterMouseReleased
+        if(!this.slider_average_filter.isEnabled())
+            return;
+        
         this.backupImageControler(this.average_filter.getClass());
         BufferedImage img = this.backup_working_image;
         int value = this.slider_average_filter.getValue();
@@ -811,6 +829,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_slider_average_filterStateChanged
 
     private void slider_median_filterMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_median_filterMouseReleased
+        if(!this.slider_median_filter.isEnabled())
+            return;
+        
         this.backupImageControler(this.median_filter.getClass());
         BufferedImage img = this.backup_working_image;
         int value = this.slider_median_filter.getValue();
@@ -840,6 +861,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_button_revertActionPerformed
 
     private void slider_add_brightnessMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_add_brightnessMouseReleased
+        if(!this.slider_add_brightness.isEnabled())
+            return;
+        
         this.slider_add_brightness.setEnabled(false);
         int value = this.slider_add_brightness.getValue();
         //BufferedImage img = this.backup_working_image;
@@ -850,6 +874,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_slider_add_brightnessMouseReleased
 
     private void slider_mult_brightnessMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_mult_brightnessMouseReleased
+        if(!this.slider_mult_brightness.isEnabled())
+            return;
+        
         this.slider_mult_brightness.setEnabled(false);
         int value = this.slider_mult_brightness.getValue();
         //BufferedImage img = this.backup_working_image;
@@ -872,17 +899,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_item_undo_allActionPerformed
 
     private void item_salvar_comoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salvar_comoActionPerformed
-        window_save_as.setTitle("Salvar como");
-        window_save_as.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window_save_as.setLocationRelativeTo(null);
-        window_save_as.setVisible(true);
+        new SaveWindow().setVisible(true);
     }//GEN-LAST:event_item_salvar_comoActionPerformed
 
     private void item_openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_openActionPerformed
-        window_open.setTitle("Abrir");
-        window_open.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window_open.setLocationRelativeTo(null);
-        window_open.setVisible(true);
+        new OpenWindow().setVisible(true);
     }//GEN-LAST:event_item_openActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -890,33 +911,43 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void button_custom_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_custom_filterActionPerformed
-        window_mask.setTitle("Mask");
-        window_mask.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window_mask.setLocationRelativeTo(null);
-        window_mask.setVisible(true);
+        //MaskWindow window_mask = new MaskWindow();
+        //window_mask.setTitle("Mask");
+        //window_mask.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //window_mask.setLocationRelativeTo(null);
+        //window_mask.setVisible(true);
+        this.window_mask.setVisible(!this.window_mask.isVisible());
     }//GEN-LAST:event_button_custom_filterActionPerformed
+
+    private void slider_add_brightnessMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_add_brightnessMouseDragged
+        this.slider_add_brightness.setToolTipText("" + this.slider_add_brightness.getValue());
+    }//GEN-LAST:event_slider_add_brightnessMouseDragged
     
     private void processImage(DigitalProcess process, Object arg) {
-        //new Thread() {
-            //public void run() {
-                try {
-                    ApplicationWindow.sem_processing.acquire();
-                    {// ------ Critical Session ------
-                        enableControls(false);
-                        saveState();
-                        if(process != null)
-                            updateWorkImage(process.apply(working_image, arg));
-                        else
-                            updateWorkImage(presentation_image);
-                        backup_working_image = working_image;
-                        enableControls(true);
-                    }// ------------------------------
-                    ApplicationWindow.sem_processing.release();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            //}
-        //}.start();
+        try {
+            ApplicationWindow.sem_processing.acquire();
+            {// ------ Critical Session ------
+                // Save current state
+                this.saveState();
+                
+                // Show processing message
+                this.updatePresentationProperties(this.img_processing);
+                this.graphics_image_panel.drawImage(this.img_processing, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
+
+                // Process image
+                if(process != null)
+                    this.updateWorkImage(process.apply(this.working_image, arg));
+                else
+                    this.updateWorkImage(this.presentation_image);
+                
+                // Restore state
+                this.backup_working_image = this.working_image;
+                this.updatePresentationProperties(this.working_image);
+            }// ------------------------------
+            ApplicationWindow.sem_processing.release();
+        } catch (InterruptedException ex) {
+            // No handling needed!
+        }
     }
 
     private boolean imageIsYIQ(FileReader file) {
@@ -932,14 +963,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 line = sCurrentLine;
             }
         } catch (IOException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         } finally {
             try {
                 if (br != null) {
                     br.close();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+                // No handling needed!
             }
         }
 
@@ -953,7 +984,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             
             // Get file extension type
             filetype = filename.substring(filename.length() - 3);
-            System.out.println(filetype);
+
             // Write file
             ImageIO.write(this.working_image, filetype, this.img_file);
 
@@ -988,10 +1019,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
             this.setTitle(this.img_file.getName() + " - Processador Digital de Imagem");
         } catch (NoSuchFileException ex) {
             this.img_file = bkp_file;
-            JOptionPane.showMessageDialog(null, "Nome de arquivo inválido.", " ERRO", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Nome de arquivo inválido.", " Erro", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             this.img_file = bkp_file;
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao salvar o arquivo!\n Tente novamente.", " Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -1026,7 +1057,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.current_state.setImage(this.working_image);
 
                 // Update presentation properties
-                updatePresentationProperties();
+                this.updatePresentationProperties(this.working_image);
+                this.clearImagePanel();
 
                 // Update presentation image
                 this.presentation_image = this.working_image;
@@ -1038,36 +1070,42 @@ public class ApplicationWindow extends javax.swing.JFrame {
             this.initial_state.clone(this.current_state);
             this.enableControls(true);
         } catch (IOException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         } catch (InterruptedException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
+        } catch (NullPointerException ex) {
+            // No handling needed!
         }
     }
 
-    public void updatePresentationProperties() {
-        if (this.working_image == null)
+    public void applyMask(Mask mask) {
+        this.processImage(this.correlation_filter, mask);
+    }
+    
+    private void updatePresentationProperties(BufferedImage image) {
+        if (image == null)
             return;
 
         // Get panel dimensions
-        int presentation_panel_height = panel_presentation_image.getHeight();
-        int presentation_panel_width = panel_presentation_image.getWidth();
+        int presentation_panel_height = this.panel_presentation_image.getHeight();
+        int presentation_panel_width = this.panel_presentation_image.getWidth();
 
         // Resize image to panel size
         if (presentation_panel_height > presentation_panel_width) {
             this.work_image_w = presentation_panel_width;
-            this.work_image_h = Image.getProportionalHeight(this.working_image.getHeight(), this.working_image.getWidth(), this.work_image_w);
+            this.work_image_h = Image.getProportionalHeight(image.getHeight(), image.getWidth(), this.work_image_w);
         } else {
             this.work_image_h = presentation_panel_height;
-            this.work_image_w = Image.getProportionalWidth(this.working_image.getHeight(), this.working_image.getWidth(), this.work_image_h);
+            this.work_image_w = Image.getProportionalWidth(image.getHeight(), image.getWidth(), this.work_image_h);
         }
 
         // Check if image exced panel limits
         if (this.work_image_h > presentation_panel_height) {
             this.work_image_h = presentation_panel_height;
-            this.work_image_w = Image.getProportionalWidth(this.working_image.getHeight(), this.working_image.getWidth(), this.work_image_h);
+            this.work_image_w = Image.getProportionalWidth(image.getHeight(), image.getWidth(), this.work_image_h);
         } else if (this.work_image_w > presentation_panel_width) {
             this.work_image_w = presentation_panel_width;
-            this.work_image_h = Image.getProportionalHeight(this.working_image.getHeight(), this.working_image.getWidth(), this.work_image_w);
+            this.work_image_h = Image.getProportionalHeight(image.getHeight(), image.getWidth(), this.work_image_w);
         }
 
         // Get center position
@@ -1075,14 +1113,24 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.work_image_y = (presentation_panel_height - this.work_image_h) / 2;
 
         // Get graphics from component
-        this.showed_image = panel_presentation_image.getGraphics();
-        panel_presentation_image.paintComponents(this.showed_image);
-
-        // Clear last paint
-        this.showed_image.setColor(Color.GRAY);
-        this.showed_image.fillRect(0, 0, presentation_panel_width, presentation_panel_height);
+        this.graphics_image_panel = panel_presentation_image.getGraphics();
+        panel_presentation_image.paintComponents(this.graphics_image_panel);
     }
 
+    private void clearImagePanel() {
+        // Clear last paint
+        if(this.graphics_image_panel == null)
+            return;
+        
+        this.graphics_image_panel.setColor(Color.GRAY);
+        this.graphics_image_panel.fillRect(
+            0, 
+            0, 
+            this.panel_presentation_image.getWidth(), 
+            this.panel_presentation_image.getHeight()
+        );
+    }
+    
     private void updateWorkImage(BufferedImage img) {
         // Update image
         this.working_image = img;
@@ -1095,7 +1143,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             return;
 
         // Paint the image
-        this.showed_image.drawImage(this.presentation_image, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
+        this.graphics_image_panel.drawImage(this.presentation_image, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
     }
 
     private void backupImageControler(Class requester) {
@@ -1112,16 +1160,21 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private void applyTransformations() {
         ApplicationState state = new ApplicationState();
 
-        state.setYIQSpace(this.current_state.isYIQ());
-        state.setImage(this.working_image);
+        try {
+            state.setYIQSpace(this.current_state.isYIQ());
+            state.setImage(this.working_image);
 
-        this.initial_state.clone(state);
+            this.initial_state.clone(state);
+            this.redo_states.clear();
+            this.item_redo.setEnabled(false);
 
-        this.redo_states.clear();
-        this.item_redo.setEnabled(false);
+            // Restore default state
+            this.restoreState(state);
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao aplicar transformações!\nTente Novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            // No handling needed!
+        }
 
-        // Restore default state
-        this.restoreState(state);
     }
 
     private void revertTransformations() {
@@ -1129,9 +1182,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.item_redo.setEnabled(false);
 
         ApplicationState state = new ApplicationState();
-        state.clone(this.initial_state);
-        
-        this.restoreState(state);
+
+        try {
+            state.clone(this.initial_state);
+            this.restoreState(state);
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao reverter transformações!\nTente Novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            // No handling needed!
+        }
     }
     
     private void undoState() {
@@ -1154,7 +1212,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.item_undo_all.setEnabled(false);
             }
         } catch (EmptyStackException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         }
     }
     
@@ -1193,22 +1251,25 @@ public class ApplicationWindow extends javax.swing.JFrame {
             if(this.redo_states.empty()) 
                 this.item_redo.setEnabled(false);
         } catch (EmptyStackException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         }
     }
     
     private void saveState() {
         ApplicationState state = new ApplicationState();
         
-        state.clone(this.current_state);
-        
-        this.undo_states.push(state);
+        try {
+            state.clone(this.current_state);
+            this.undo_states.push(state);
 
-        if(!this.redo_states.empty())
-            this.redo_states.clear();
-        
-        this.item_undo.setEnabled(true);
-        this.item_undo_all.setEnabled(true);
+            if(!this.redo_states.empty())
+                this.redo_states.clear();
+
+            this.item_undo.setEnabled(true);
+            this.item_undo_all.setEnabled(true);
+        } catch (NullPointerException ex) {
+            // No handling needed!
+        }
     }
     
     private void restoreState(ApplicationState state) {
@@ -1251,7 +1312,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }// ------------------------------
             ApplicationWindow.sem_processing.release();
         } catch (InterruptedException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            // No handling needed!
         }
     }
 
@@ -1327,7 +1388,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                                 
                                 Thread.sleep(200);
                             } catch (Exception ex) {
-                                Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+                                //Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     }
@@ -1338,10 +1399,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
     }
 
+    public void customFilterButtonSwitch() {
+        this.button_custom_filter.doClick();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_apply;
-    private javax.swing.JButton button_custom_filter;
-    private javax.swing.JButton button_laplaciano_filter;
+    public javax.swing.JToggleButton button_custom_filter;
+    private javax.swing.JToggleButton button_laplaciano_filter;
     private javax.swing.JButton button_negative;
     private javax.swing.JButton button_revert;
     private javax.swing.JButton button_sobel;
@@ -1404,6 +1469,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private BufferedImage working_image = null;         // Working image (used during transformations)
     private BufferedImage backup_working_image = null;  // Storage the last transformation
     private BufferedImage presentation_image = null;    // Presentation image
+    private BufferedImage img_processing;
 
     // Control Properties
     private Class backup_owner = null;      // Backup image owner
@@ -1417,7 +1483,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private ApplicationState initial_state;
 
     // Presentation Panel Properties
-    private Graphics showed_image;
+    private Graphics graphics_image_panel;
     private int work_image_x;
     private int work_image_y;
     private int work_image_h;
@@ -1434,13 +1500,16 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private final Median median_filter = new Median();          // Median filter
     private final SobelGradient sobel = new SobelGradient();    // Sobel filter
     private final Negative negative = new Negative();           // Negative transformation
+    private final Correlation correlation_filter = new Correlation();
     
     // Image Properties
     private File img_file;
 
     // Extern Windows
-    private final SaveWindow window_save_as = new SaveWindow();
-    private final OpenWindow window_open = new OpenWindow();
+    //private final SaveWindow window_save_as = new SaveWindow();
+    //private final OpenWindow window_open = new OpenWindow();
     private final MaskWindow window_mask = new MaskWindow();
     public static ApplicationWindow window_application;
+    public static File current_open_dir = null;
+    public static File current_save_dir = null;
 }

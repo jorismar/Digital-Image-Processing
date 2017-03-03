@@ -13,6 +13,9 @@ import java.awt.image.BufferedImage;
  */
 public class Image {
     public static BufferedImage clone(BufferedImage img) {
+        if(img == null)
+            return null;
+        
         return new BufferedImage(
             img.getColorModel(), 
             img.copyData(null), 

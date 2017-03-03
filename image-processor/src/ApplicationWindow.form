@@ -560,9 +560,9 @@
         <Component class="javax.swing.JSlider" name="slider_average_filter">
           <Properties>
             <Property name="maximum" type="int" value="30"/>
-            <Property name="minimum" type="int" value="1"/>
+            <Property name="minimum" type="int" value="3"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;???&quot;" type="code"/>
+              <Connection code="&quot;&quot; + slider_average_filter.getMinimum()" type="code"/>
             </Property>
             <Property name="value" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="slider_average_filter.getMinimum()" type="code"/>
@@ -613,6 +613,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_custom_filterActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
@@ -672,14 +675,16 @@
         <Component class="javax.swing.JSlider" name="slider_median_filter">
           <Properties>
             <Property name="maximum" type="int" value="30"/>
-            <Property name="minimum" type="int" value="1"/>
-            <Property name="value" type="int" value="1"/>
+            <Property name="minimum" type="int" value="3"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="slider_median_filterStateChanged"/>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="slider_median_filterMouseReleased"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="slider_median_filter.setValue(slider_median_filter.getMinimum());"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JSlider" name="slider_add_brightness">
           <Properties>
@@ -693,6 +698,7 @@
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="slider_add_brightnessStateChanged"/>
+            <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="slider_add_brightnessMouseDragged"/>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="slider_add_brightnessMouseReleased"/>
           </Events>
         </Component>
@@ -768,7 +774,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&quot; + slider_average_filter.getValue()" type="code"/>
+              <Connection code="&quot;&quot; + slider_average_filter.getMinimum()" type="code"/>
             </Property>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>
@@ -780,7 +786,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&quot; + slider_median_filter.getValue()" type="code"/>
+              <Connection code="&quot;&quot; + slider_median_filter.getMinimum()" type="code"/>
             </Property>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>

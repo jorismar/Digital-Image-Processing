@@ -1,3 +1,6 @@
+
+import javax.swing.ImageIcon;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +18,11 @@ public class OpenWindow extends javax.swing.JFrame {
      */
     public OpenWindow() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon("resrc/img/app_icon.png").getImage());
+
+        if(ApplicationWindow.current_open_dir != null)
+            window_open_file.setCurrentDirectory(ApplicationWindow.current_open_dir);
     }
 
     /**
@@ -28,7 +36,9 @@ public class OpenWindow extends javax.swing.JFrame {
 
         window_open_file = new javax.swing.JFileChooser();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Abrir");
+        setAlwaysOnTop(true);
         setLocationByPlatform(true);
 
         window_open_file.setCurrentDirectory(new java.io.File("D:\\Imagens"));
@@ -55,8 +65,10 @@ public class OpenWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void window_open_fileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_window_open_fileActionPerformed
-        if(!evt.getActionCommand().equals("CancelSelection"))
+        if(!evt.getActionCommand().equals("CancelSelection")) {
             ApplicationWindow.window_application.openImageFile(this.window_open_file.getSelectedFile());
+            ApplicationWindow.current_open_dir = this.window_open_file.getCurrentDirectory();
+        }
         
         this.setVisible(false);
     }//GEN-LAST:event_window_open_fileActionPerformed
@@ -91,7 +103,9 @@ public class OpenWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OpenWindow().setVisible(true);
+                OpenWindow window = new OpenWindow();
+                window.setLocationRelativeTo(null);
+                window.setVisible(true);
             }
         });
     }

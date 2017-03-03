@@ -1,3 +1,9 @@
+
+import DigitalImageProcess.Tools.Mask;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +21,8 @@ public class MaskWindow extends javax.swing.JFrame {
      */
     public MaskWindow() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon("resrc/img/app_icon.png").getImage());
     }
 
     /**
@@ -26,51 +34,51 @@ public class MaskWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        input_value00 = new javax.swing.JTextField();
+        input_value10 = new javax.swing.JTextField();
+        input_value20 = new javax.swing.JTextField();
+        input_value01 = new javax.swing.JTextField();
+        input_value11 = new javax.swing.JTextField();
+        input_value21 = new javax.swing.JTextField();
+        input_value02 = new javax.swing.JTextField();
+        input_value12 = new javax.swing.JTextField();
+        input_value22 = new javax.swing.JTextField();
         button_ok = new javax.swing.JButton();
         button_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Matrix Mask");
         setAlwaysOnTop(true);
         setLocation(new java.awt.Point(0, 0));
         setUndecorated(true);
         setResizable(false);
 
-        jTextField1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value00.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value00.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value10.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value01.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value01.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField6.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value21.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value02.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value02.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField8.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField9.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value22.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        input_value22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         button_ok.setText("Aplicar");
         button_ok.addActionListener(new java.awt.event.ActionListener() {
@@ -96,23 +104,23 @@ public class MaskWindow extends javax.swing.JFrame {
                     .addComponent(button_ok, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button_cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(input_value00, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(input_value10, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(input_value20, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(input_value01, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(input_value11, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(input_value21, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(input_value02, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(input_value12, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(input_value22, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -120,19 +128,19 @@ public class MaskWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(input_value00, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(input_value10, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(input_value20, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(input_value01, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(input_value11, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(input_value21, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(input_value02, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(input_value12, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(input_value22, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addComponent(button_ok, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -144,10 +152,31 @@ public class MaskWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_okActionPerformed
-        // TODO add your handling code here:
+        JTextField[][] values = new JTextField[][] {
+            { this.input_value00, this.input_value01, this.input_value02 }, 
+            { this.input_value10, this.input_value11, this.input_value12 }, 
+            { this.input_value20, this.input_value21, this.input_value22 }
+        };
+        
+        Mask mask = new Mask(3, 3);
+       
+        try {
+            for(int x = 0; x < 3; x++)
+                for(int y = 0; y < 3; y++)
+                    mask.setValue(x, y, Integer.parseInt(values[x][y].getText()));
+            
+            ApplicationWindow.window_application.applyMask(mask);
+            ApplicationWindow.window_application.customFilterButtonSwitch();
+            this.setVisible(false);
+        } catch(NumberFormatException ex) {
+            this.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Valor inválido!\nVerifique os valores digitados e tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            this.setVisible(true);
+        }
     }//GEN-LAST:event_button_okActionPerformed
 
     private void button_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_cancelActionPerformed
+        ApplicationWindow.window_application.customFilterButtonSwitch();
         this.setVisible(false);
     }//GEN-LAST:event_button_cancelActionPerformed
 
@@ -191,14 +220,14 @@ public class MaskWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_cancel;
     private javax.swing.JButton button_ok;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField input_value00;
+    private javax.swing.JTextField input_value01;
+    private javax.swing.JTextField input_value02;
+    private javax.swing.JTextField input_value10;
+    private javax.swing.JTextField input_value11;
+    private javax.swing.JTextField input_value12;
+    private javax.swing.JTextField input_value20;
+    private javax.swing.JTextField input_value21;
+    private javax.swing.JTextField input_value22;
     // End of variables declaration//GEN-END:variables
 }

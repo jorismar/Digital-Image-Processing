@@ -17,8 +17,8 @@ public abstract class DigitalProcess {
     public BufferedImage apply(BufferedImage img, Object arg) {
         BufferedImage output = Image.clone(img);
         
-        for(int x = 0; x < img.getWidth(); x++)
-            for(int y = 0; y < img.getHeight(); y++)
+        for(int y = 0; y < img.getHeight(); y++)
+            for(int x = 0; x < img.getWidth(); x++)
                 output.setRGB(x, y, this.transform(img, x, y, arg));
         
         return output;

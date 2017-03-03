@@ -55,30 +55,75 @@ public class MaskWindow extends javax.swing.JFrame {
 
         input_value00.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value00.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value00.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value00FocusGained(evt);
+            }
+        });
 
         input_value10.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value10FocusGained(evt);
+            }
+        });
 
         input_value20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value20.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value20FocusGained(evt);
+            }
+        });
 
         input_value01.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value01.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value01.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value01FocusGained(evt);
+            }
+        });
 
         input_value11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value11.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value11FocusGained(evt);
+            }
+        });
 
         input_value21.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value21.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value21FocusGained(evt);
+            }
+        });
 
         input_value02.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value02.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value02.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value02FocusGained(evt);
+            }
+        });
 
         input_value12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value12.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value12FocusGained(evt);
+            }
+        });
 
         input_value22.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         input_value22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        input_value22.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_value22FocusGained(evt);
+            }
+        });
 
         button_ok.setText("Aplicar");
         button_ok.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +224,42 @@ public class MaskWindow extends javax.swing.JFrame {
         ApplicationWindow.window_application.customFilterButtonSwitch();
         this.setVisible(false);
     }//GEN-LAST:event_button_cancelActionPerformed
+
+    private void input_value00FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value00FocusGained
+        this.input_value00.setText("");
+    }//GEN-LAST:event_input_value00FocusGained
+
+    private void input_value10FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value10FocusGained
+        this.input_value10.setText("");
+    }//GEN-LAST:event_input_value10FocusGained
+
+    private void input_value20FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value20FocusGained
+        this.input_value20.setText("");
+    }//GEN-LAST:event_input_value20FocusGained
+
+    private void input_value01FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value01FocusGained
+        this.input_value01.setText("");
+    }//GEN-LAST:event_input_value01FocusGained
+
+    private void input_value11FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value11FocusGained
+        this.input_value11.setText("");
+    }//GEN-LAST:event_input_value11FocusGained
+
+    private void input_value21FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value21FocusGained
+        this.input_value21.setText("");
+    }//GEN-LAST:event_input_value21FocusGained
+
+    private void input_value02FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value02FocusGained
+        this.input_value02.setText("");
+    }//GEN-LAST:event_input_value02FocusGained
+
+    private void input_value12FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value12FocusGained
+        this.input_value12.setText("");
+    }//GEN-LAST:event_input_value12FocusGained
+
+    private void input_value22FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_value22FocusGained
+        this.input_value22.setText("");
+    }//GEN-LAST:event_input_value22FocusGained
 
     /**
      * @param args the command line arguments

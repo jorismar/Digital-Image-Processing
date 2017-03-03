@@ -943,6 +943,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 // Restore state
                 this.backup_working_image = this.working_image;
                 this.updatePresentationProperties(this.working_image);
+                this.clearImagePanel();
             }// ------------------------------
             ApplicationWindow.sem_processing.release();
         } catch (InterruptedException ex) {

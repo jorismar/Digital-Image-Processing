@@ -5,6 +5,7 @@
  */
 package Application.Utils;
 
+import DigitalImageProcess.Colors.ColorSpace;
 import DigitalImageProcess.Tools.Image;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
@@ -16,7 +17,7 @@ import javax.swing.JRadioButton;
  * @author Jorismar
  */
 public class State {
-    private boolean is_yiq;
+    private int color_space;
     private JRadioButton band_selected;
     private int add_brightness_value;
     private int mult_brightness_value;
@@ -26,7 +27,7 @@ public class State {
     private BufferedImage image;
 
     public State() {
-        this.is_yiq = false;
+        this.color_space = ColorSpace.RGB;
         this.band_selected = null;
         this.add_brightness_value = 0;
         this.mult_brightness_value = 0;
@@ -37,7 +38,7 @@ public class State {
     }
     
     public State(
-            boolean is_yiq, 
+            int color_space, 
             JRadioButton band_selected, 
             int add_brightness_value, 
             int mult_brightness_value, 
@@ -46,7 +47,7 @@ public class State {
             int median_filter_value, 
             BufferedImage image
     ) {
-        this.is_yiq = is_yiq;
+        this.color_space = color_space;
         this.band_selected = band_selected;
         this.add_brightness_value = add_brightness_value;
         this.mult_brightness_value = mult_brightness_value;
@@ -56,12 +57,12 @@ public class State {
         this.image = image;
     }
 
-    public boolean isYIQ() {
-        return is_yiq;
+    public int getColorSpace() {
+        return color_space;
     }
 
-    public void setYIQSpace(boolean is_yiq) {
-        this.is_yiq = is_yiq;
+    public void setColorSpace(int color_space) {
+        this.color_space = color_space;
     }
 
     public JRadioButton getBandSelector() {
@@ -126,7 +127,7 @@ public class State {
         if(this.image == null)
             throw new NullPointerException();
         
-        this.is_yiq = state.isYIQ();
+        this.color_space = state.getColorSpace();
         this.band_selected = state.getBandSelector();
         this.add_brightness_value = state.getAddBrightnessValue();
         this.mult_brightness_value = state.getMultBrightnessValue();

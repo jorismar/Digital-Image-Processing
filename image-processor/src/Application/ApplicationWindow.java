@@ -15,6 +15,7 @@ import DigitalImageProcess.Luminosity.MultiplicativeBrightnes;
 import DigitalImageProcess.Tools.Image;
 import DigitalImageProcess.Tools.Mask;
 import Application.Utils.State;
+import DigitalImageProcess.Colors.ColorSpace;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -701,7 +702,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         
         this.selector_yiq_space.setSelected(false);
         this.processImage(new YIQConversor(), false);
-        this.current_state.setYIQSpace(false);
+        this.current_state.setColorSpace(ColorSpace.RGB);
     }//GEN-LAST:event_selector_rgb_spaceActionPerformed
 
     private void selector_band_r_monoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selector_band_r_monoActionPerformed
@@ -733,7 +734,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         this.selector_rgb_space.setSelected(false);
         this.processImage(new YIQConversor(), true);
-        this.current_state.setYIQSpace(true);
+        this.current_state.setColorSpace(ColorSpace.YIQ);
     }//GEN-LAST:event_selector_yiq_spaceActionPerformed
 
     private void selector_band_g_monoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selector_band_g_monoActionPerformed
@@ -782,7 +783,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private void button_thresholding_valueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_thresholding_valueActionPerformed
         try {
             int threasholding_value = Integer.parseInt(this.input_thresholding_value.getText());
-            this.processImage(this.thresholding, threasholding_value);
+            this.processImage(new Thresholding(this.current_state.getColorSpace()), threasholding_value);
             this.current_state.setThresholdingValue(threasholding_value);
         } catch (NumberFormatException ex) {
             // No handling needed!
@@ -816,11 +817,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_slider_median_filterStateChanged
 
     private void button_sobelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_sobelActionPerformed
-        this.processImage(this.sobel, null);
+        this.processImage(new SobelGradient(), null);
     }//GEN-LAST:event_button_sobelActionPerformed
 
     private void button_negativeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_negativeActionPerformed
-        this.processImage(this.negative, null);
+        this.processImage(new Negative(this.current_state.getColorSpace()), false);
     }//GEN-LAST:event_button_negativeActionPerformed
 
     private void button_applyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_applyActionPerformed
@@ -924,7 +925,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         }
     }
 
-    private boolean imageIsYIQ(FileReader file) {
+    private byte imageIsYIQ(FileReader file) {
         BufferedReader br = null;
         String line = "";
         
@@ -948,7 +949,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         }
 
-        return line.equals(this.yiq_mark);
+        return line.equals(this.yiq_mark) ? ColorSpace.YIQ : ColorSpace.RGB;
     }
 
     private void save() throws IOException {
@@ -963,7 +964,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             ImageIO.write(this.presentation_image, filetype, this.img_file);
 
             // Add YIQ mark
-            if(this.current_state.isYIQ())
+            if(this.current_state.getColorSpace() == ColorSpace.YIQ)
                 Files.write(img_file.toPath(), ("\n" + this.yiq_mark).getBytes(), StandardOpenOption.APPEND);
 
             // Apply transformations
@@ -1025,7 +1026,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.item_salvar_como.setEnabled(true);
 
                 // Check space color
-                this.current_state.setYIQSpace(imageIsYIQ(new FileReader(file)));
+                this.current_state.setColorSpace(imageIsYIQ(new FileReader(file)));
 
                 // Update states
                 this.current_state.setImage(this.presentation_image);
@@ -1052,7 +1053,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }
 
     public void applyMask(Mask mask) {
-        this.processImage(this.correlation_filter, mask);
+        this.processImage(new Correlation(), mask);
     }
     
     private void updatePresentationProperties(BufferedImage image) {
@@ -1115,7 +1116,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         State state = new State();
 
         try {
-            state.setYIQSpace(this.current_state.isYIQ());
+            state.setColorSpace(this.current_state.getColorSpace());
             state.setImage(this.presentation_image);
 
             this.initial_state.clone(state);
@@ -1239,8 +1240,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
                 this.current_state = state;
                 
-                this.selector_rgb_space.setSelected(!state.isYIQ());
-                this.selector_yiq_space.setSelected(state.isYIQ());
+                boolean is_yiq = state.getColorSpace() == ColorSpace.YIQ;
+                
+                this.selector_rgb_space.setSelected(!is_yiq);
+                this.selector_yiq_space.setSelected(is_yiq);
 
                 this.selector_band_r_mono.setSelected(false);
                 this.selector_band_g_mono.setSelected(false);
@@ -1449,12 +1452,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private final Bands bands = new Bands();                    // Bands controller
     private final AdditiveBrightnes add_brightness = new AdditiveBrightnes();     // Additive Brightness controller
     private final MultiplicativeBrightnes mult_brightness = new MultiplicativeBrightnes();    // Multiplicative Brightness controller
-    private final Thresholding thresholding = new Thresholding();   // Thresholding (Limiarização)
+    //private final Thresholding thresholding = new Thresholding();   // Thresholding (Limiarização)
     private final Average average_filter = new Average();       // Average filter
     private final Median median_filter = new Median();          // Median filter
-    private final SobelGradient sobel = new SobelGradient();    // Sobel filter
-    private final Negative negative = new Negative();           // Negative transformation
-    private final Correlation correlation_filter = new Correlation();
+    //private final SobelGradient sobel = new SobelGradient();    // Sobel filter
+    //private final Negative negative = new Negative();           // Negative transformation
+    //private final Correlation correlation_filter = new Correlation();
     
     // Image Properties
     private File img_file;

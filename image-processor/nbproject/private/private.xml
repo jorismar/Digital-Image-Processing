@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/projetos/Digital-Image-Processing/image-processor/src/ApplicationWindow.java</file>
-            <file>file:/C:/projetos/Digital-Image-Processing/image-processor/src/MaskWindow.java</file>
+            <file>file:/F:/projetos/Digital-Image-Processing/image-processor/src/DigitalImageProcess/Effects/Thresholding.java</file>
+            <file>file:/F:/projetos/Digital-Image-Processing/image-processor/src/DigitalImageProcess/DigitalProcess.java</file>
+            <file>file:/F:/projetos/Digital-Image-Processing/image-processor/src/Application/ApplicationWindow.java</file>
+            <file>file:/F:/projetos/Digital-Image-Processing/image-processor/src/DigitalImageProcess/Colors/YIQConversor.java</file>
         </group>
     </open-files>
 </project-private>

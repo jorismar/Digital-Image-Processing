@@ -17,33 +17,51 @@ import DigitalImageProcess.Tools.Mask;
 public class Average extends DigitalProcess {
     @Override
     protected int transform(BufferedImage img, int px, int py, Object matx_width) {
-        Integer matrix_width = (Integer) matx_width;
-        /*
-        Mask mask = new Mask();
+        Integer matrixWH = (Integer) matx_width;
         
+        // Create mask
+        Mask mask = new Mask(matrixWH, matrixWH);
         mask.fillMask(1);
         
+        // Apply mask
         int[] rgb = new Correlation().applyMask(img, px, py, mask);
         
-        int px0 = px - mask.getWidth() / 2;
-        int py0 = py - mask.getHeight() / 2;
-        */
+    // ----- Calculates number of the processed pixels. ----- //
         
-        int r = 0, g = 0, b = 0;
-       
-        long len = matrix_width * matrix_width;
+        // Matrix Center
+        int pxC = matrixWH / 2;
+        int pyC = matrixWH / 2;
         
-        for (int x = px - (Math.round((float)(matrix_width / 2))); x < (px + (matrix_width / 2)); x++)
-            for (int y = py - (Math.round((float)(matrix_width / 2))); y < (py + (matrix_width / 2)); y++)
-                if (x >= 0 && x < img.getWidth() && y >= 0 && y < img.getHeight()) {
-                    Color color = new Color(img.getRGB(x, y), true);
-                    
-                    r += color.getRed();
-                    g += color.getGreen();
-                    b += color.getBlue();
-                } else len--;
+        // M(0,0) position
+        int px0 = px - pxC;
+        int py0 = py - pyC;
+        
+        // M(n,n) position
+        int pxN = px + matrixWH - pxC - 1;
+        int pyN = py + matrixWH - pyC - 1;
+        
+        // Get number of the processed columns
+        int numW;
+        numW = px0 < 0 ? matrixWH + px0 : matrixWH;
+        numW = pxN >= img.getWidth() ? numW - (pxN - (img.getWidth() - 1)) : numW;
+        
+        // Get number of the processed lines
+        int numH;
+        numH = py0 < 0 ? matrixWH + py0 : matrixWH;
+        numH = pyN >= img.getHeight() ? numH - (pyN - (img.getHeight() - 1)) : numH;
+        
+        // Get the number of processed pixels
+        int len = numW * numH;
+        
+    // ------------------------------------------------------ //
 
-        return new Color(Math.round(r/len), Math.round(g/len), Math.round(b/len)).getRGB();
-        
+        // Return new color of entry pixel.
+        return (
+            new Color(
+                Math.round(rgb[0] / len), 
+                Math.round(rgb[1] / len), 
+                Math.round(rgb[2] / len)
+            ).getRGB()
+        );
     }
 }

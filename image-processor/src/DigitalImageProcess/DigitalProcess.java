@@ -6,7 +6,6 @@
 package DigitalImageProcess;
 
 import java.awt.image.BufferedImage;
-import DigitalImageProcess.Tools.Image;
 
 /**
  *
@@ -15,7 +14,11 @@ import DigitalImageProcess.Tools.Image;
 
 public abstract class DigitalProcess {
     public BufferedImage apply(BufferedImage img, Object arg) {
-        BufferedImage output = Image.clone(img);
+        BufferedImage output = new BufferedImage(
+            img.getWidth(), 
+            img.getHeight(), 
+            img.getType()
+        );
         
         for(int y = 0; y < img.getHeight(); y++)
             for(int x = 0; x < img.getWidth(); x++)

@@ -1,15 +1,7 @@
+package Application;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,17 +13,18 @@ import javax.swing.JOptionPane;
  *
  * @author Jorismar
  */
-public class SaveWindow extends javax.swing.JFrame {
+public class OpenWindow extends javax.swing.JFrame {
 
     /**
-     * Creates new form SaveWindow
+     * Creates new form OpenWindow
      */
-    public SaveWindow() {
+    public OpenWindow() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(new ImageIcon("resrc/img/app_icon.png").getImage());
-        if(ApplicationWindow.current_save_dir != null)
-            window_save_file.setCurrentDirectory(ApplicationWindow.current_save_dir);
+
+        if(ApplicationWindow.current_open_dir != null)
+            window_open_file.setCurrentDirectory(ApplicationWindow.current_open_dir);
     }
 
     /**
@@ -43,18 +36,17 @@ public class SaveWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        window_save_file = new javax.swing.JFileChooser();
+        window_open_file = new javax.swing.JFileChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Salvar como");
+        setTitle("Abrir");
         setAlwaysOnTop(true);
         setLocationByPlatform(true);
 
-        window_save_file.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        window_save_file.setCurrentDirectory(new java.io.File("D:\\Imagens"));
-        window_save_file.addActionListener(new java.awt.event.ActionListener() {
+        window_open_file.setCurrentDirectory(new java.io.File("D:\\Imagens"));
+        window_open_file.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                window_save_fileActionPerformed(evt);
+                window_open_fileActionPerformed(evt);
             }
         });
 
@@ -62,24 +54,26 @@ public class SaveWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(window_save_file, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(window_open_file, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(window_save_file, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(window_open_file, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void window_save_fileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_window_save_fileActionPerformed
+    private void window_open_fileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_window_open_fileActionPerformed
         if(!evt.getActionCommand().equals("CancelSelection")) {
-            ApplicationWindow.window_application.saveAs(this.window_save_file.getSelectedFile());
-            ApplicationWindow.current_save_dir = this.window_save_file.getCurrentDirectory();
+            ApplicationWindow.window_application.openImageFile(this.window_open_file.getSelectedFile());
+            ApplicationWindow.current_open_dir = this.window_open_file.getCurrentDirectory();
         }
         
         this.setVisible(false);
-    }//GEN-LAST:event_window_save_fileActionPerformed
+    }//GEN-LAST:event_window_open_fileActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,20 +92,20 @@ public class SaveWindow extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SaveWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OpenWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SaveWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OpenWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SaveWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OpenWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SaveWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OpenWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                SaveWindow window = new SaveWindow();
+                OpenWindow window = new OpenWindow();
                 window.setLocationRelativeTo(null);
                 window.setVisible(true);
             }
@@ -119,6 +113,6 @@ public class SaveWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFileChooser window_save_file;
+    private javax.swing.JFileChooser window_open_file;
     // End of variables declaration//GEN-END:variables
 }

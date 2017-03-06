@@ -67,6 +67,7 @@ public class Mask {
     }
     
     public void fillMask(int value) {
-        Arrays.fill(this.matrix, value);
+        for(int[] line: this.matrix)
+            Arrays.fill(line, value);
     }
 }

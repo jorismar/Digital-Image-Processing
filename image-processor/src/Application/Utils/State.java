@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Memento;
+package Application.Utils;
 
 import DigitalImageProcess.Tools.Image;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JRadioButton;
 
 /**
  *
  * @author Jorismar
  */
-public class ApplicationState {
+public class State {
     private boolean is_yiq;
     private JRadioButton band_selected;
     private int add_brightness_value;
@@ -23,7 +25,7 @@ public class ApplicationState {
     private int median_filter_value;
     private BufferedImage image;
 
-    public ApplicationState() {
+    public State() {
         this.is_yiq = false;
         this.band_selected = null;
         this.add_brightness_value = 0;
@@ -34,7 +36,7 @@ public class ApplicationState {
         this.image = null;
     }
     
-    public ApplicationState(
+    public State(
             boolean is_yiq, 
             JRadioButton band_selected, 
             int add_brightness_value, 
@@ -118,8 +120,8 @@ public class ApplicationState {
         this.image = image;
     }
     
-    public void clone(ApplicationState state) throws NullPointerException {
-        this.image = Image.clone(state.getImage());
+    public void clone(State state) throws NullPointerException {
+        this.image = state.getImage(); //Image.clone(state.getImage());
         
         if(this.image == null)
             throw new NullPointerException();

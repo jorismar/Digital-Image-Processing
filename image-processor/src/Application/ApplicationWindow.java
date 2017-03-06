@@ -1,6 +1,7 @@
+package Application;
 
-import DigitalImageProcess.Colors.RGBtoYIQ;
-import DigitalImageProcess.Colors.YIQtoRGB;
+
+import DigitalImageProcess.Colors.YIQConversor;
 import DigitalImageProcess.DigitalProcess;
 import DigitalImageProcess.Effects.Bands;
 import DigitalImageProcess.Effects.Negative;
@@ -13,8 +14,8 @@ import DigitalImageProcess.Luminosity.AdditiveBrightnes;
 import DigitalImageProcess.Luminosity.MultiplicativeBrightnes;
 import DigitalImageProcess.Tools.Image;
 import DigitalImageProcess.Tools.Mask;
-import Memento.ApplicationState;
-import java.awt.BorderLayout;
+import Application.Utils.State;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -24,21 +25,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.JRootPane;
-import javax.swing.SwingConstants;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -142,7 +135,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Processador Digital de Imagem");
         setMinimumSize(new java.awt.Dimension(1024, 750));
-        setPreferredSize(new java.awt.Dimension(1024, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -347,7 +339,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        slider_mult_brightness.setMaximum(10);
+        slider_mult_brightness.setMaximum(255);
         slider_mult_brightness.setMinimum(1);
         slider_mult_brightness.setValue(slider_mult_brightness.getMinimum());
         slider_mult_brightness.setEnabled(false);
@@ -706,8 +698,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
             this.selector_rgb_space.setSelected(true);
             return;
         }
+        
         this.selector_yiq_space.setSelected(false);
-        this.processImage(this.yiq_to_rgb, null);
+        this.processImage(new YIQConversor(), false);
         this.current_state.setYIQSpace(false);
     }//GEN-LAST:event_selector_rgb_spaceActionPerformed
 
@@ -720,10 +713,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.selector_band_g_mono.setSelected(false);
         this.selector_band_b_mono.setSelected(false);
 
-        this.backupImageControler(this.selector_band_r_mono.getClass());
-        BufferedImage img = this.backup_working_image;
         this.processImage(this.bands, new Color(255, 0, 0));
-        this.backup_working_image = img;
         this.current_state.setBandSelector(this.selector_band_r_mono);
     }//GEN-LAST:event_selector_band_r_monoActionPerformed
 
@@ -742,8 +732,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         }
 
         this.selector_rgb_space.setSelected(false);
-
-        this.processImage(this.rgb_to_yiq, null);
+        this.processImage(new YIQConversor(), true);
         this.current_state.setYIQSpace(true);
     }//GEN-LAST:event_selector_yiq_spaceActionPerformed
 
@@ -756,10 +745,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.selector_band_r_mono.setSelected(false);
         this.selector_band_b_mono.setSelected(false);
 
-        this.backupImageControler(this.selector_band_r_mono.getClass());
-        BufferedImage img = this.backup_working_image;
         this.processImage(this.bands, new Color(0, 255, 0));
-        this.backup_working_image = img;
         this.current_state.setBandSelector(this.selector_band_g_mono);
     }//GEN-LAST:event_selector_band_g_monoActionPerformed
 
@@ -772,37 +758,28 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.selector_band_g_mono.setSelected(false);
         this.selector_band_r_mono.setSelected(false);
 
-        this.backupImageControler(this.selector_band_r_mono.getClass());
-        BufferedImage img = this.backup_working_image;
         this.processImage(this.bands, new Color(0, 0, 255));
-        this.backup_working_image = img;
         this.current_state.setBandSelector(this.selector_band_b_mono);
     }//GEN-LAST:event_selector_band_b_monoActionPerformed
 
     private void slider_add_brightnessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_add_brightnessStateChanged
         this.label_add_brightness_value.setText("" + this.slider_add_brightness.getValue());
-        this.slider_add_brightness.setToolTipText("" + this.slider_add_brightness.getValue());
-        this.backupImageControler(this.add_brightness.getClass());
-        this.presentation_image = this.add_brightness.apply(this.working_image, this.slider_add_brightness.getValue());
+        //this.last_process = this.add_brightness;
+        //this.presentation_image = this.add_brightness.apply(this.backup_working_image, this.slider_add_brightness.getValue());
     }//GEN-LAST:event_slider_add_brightnessStateChanged
 
     private void slider_mult_brightnessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_mult_brightnessStateChanged
         this.label_mult_brightness_value.setText("" + this.slider_mult_brightness.getValue());
-        this.backupImageControler(this.mult_brightness.getClass());
-        this.presentation_image = this.mult_brightness.apply(this.working_image, this.slider_mult_brightness.getValue());
+        //this.last_process = this.mult_brightness;
+        //this.presentation_image = this.mult_brightness.apply(this.backup_working_image, this.slider_mult_brightness.getValue());
     }//GEN-LAST:event_slider_mult_brightnessStateChanged
 
     private void panel_presentation_imageAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panel_presentation_imageAncestorResized
-        this.updatePresentationProperties(this.working_image);
+        this.updatePresentationProperties(this.presentation_image);
         this.clearImagePanel();
     }//GEN-LAST:event_panel_presentation_imageAncestorResized
 
     private void button_thresholding_valueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_thresholding_valueActionPerformed
-        //if(!this.is_yiq_space) {
-        //    javax.swing.JOptionPane.showMessageDialog(rootPane, "A imagem precisa estar no espaço de cor YIQ.", null, javax.swing.JOptionPane.ERROR_MESSAGE);
-        //    return;
-        //}
-
         try {
             int threasholding_value = Integer.parseInt(this.input_thresholding_value.getText());
             this.processImage(this.thresholding, threasholding_value);
@@ -816,11 +793,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         if(!this.slider_average_filter.isEnabled())
             return;
         
-        this.backupImageControler(this.average_filter.getClass());
-        BufferedImage img = this.backup_working_image;
         int value = this.slider_average_filter.getValue();
         this.processImage(this.average_filter, value);
-        this.backup_working_image = img;
         this.current_state.setAverageFilterValue(value);
     }//GEN-LAST:event_slider_average_filterMouseReleased
 
@@ -832,11 +806,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         if(!this.slider_median_filter.isEnabled())
             return;
         
-        this.backupImageControler(this.median_filter.getClass());
-        BufferedImage img = this.backup_working_image;
         int value = this.slider_median_filter.getValue();
         this.processImage(this.median_filter, value);
-        this.backup_working_image = img;
         this.current_state.setAverageFilterValue(value);
     }//GEN-LAST:event_slider_median_filterMouseReleased
 
@@ -864,26 +835,18 @@ public class ApplicationWindow extends javax.swing.JFrame {
         if(!this.slider_add_brightness.isEnabled())
             return;
         
-        this.slider_add_brightness.setEnabled(false);
         int value = this.slider_add_brightness.getValue();
-        //BufferedImage img = this.backup_working_image;
-        this.processImage(null, null);
-        //this.backup_working_image = img;
+        this.processImage(this.add_brightness, value);
         this.current_state.setAddBrightnessValue(value);
-        this.slider_add_brightness.setEnabled(true);
     }//GEN-LAST:event_slider_add_brightnessMouseReleased
 
     private void slider_mult_brightnessMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_mult_brightnessMouseReleased
         if(!this.slider_mult_brightness.isEnabled())
             return;
         
-        this.slider_mult_brightness.setEnabled(false);
         int value = this.slider_mult_brightness.getValue();
-        //BufferedImage img = this.backup_working_image;
-        this.processImage(null, null);
-        //this.backup_working_image = img;
+        this.processImage(this.mult_brightness, value);
         this.current_state.setMultBrightnessValue(value);
-        this.slider_mult_brightness.setEnabled(true);
     }//GEN-LAST:event_slider_mult_brightnessMouseReleased
 
     private void item_undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_undoActionPerformed
@@ -927,6 +890,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         try {
             ApplicationWindow.sem_processing.acquire();
             {// ------ Critical Session ------
+                this.enableControls(false);
+                
                 // Save current state
                 this.saveState();
                 
@@ -934,16 +899,24 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.updatePresentationProperties(this.img_processing);
                 this.graphics_image_panel.drawImage(this.img_processing, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
 
+                if(this.last_process != process) {
+                    this.backup_working_image = this.presentation_image;
+                    this.last_process = process;
+                } else
+                    this.presentation_image = this.backup_working_image;
+                
                 // Process image
-                if(process != null)
-                    this.updateWorkImage(process.apply(this.working_image, arg));
-                else
-                    this.updateWorkImage(this.presentation_image);
+                this.presentation_image = process.apply(this.presentation_image, arg);
+                
+                this.current_state.setImage(this.presentation_image);
                 
                 // Restore state
-                this.backup_working_image = this.working_image;
-                this.updatePresentationProperties(this.working_image);
+                this.updatePresentationProperties(this.presentation_image);
                 this.clearImagePanel();
+                
+                this.enableControls(true);
+
+                System.gc();
             }// ------------------------------
             ApplicationWindow.sem_processing.release();
         } catch (InterruptedException ex) {
@@ -987,7 +960,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             filetype = filename.substring(filename.length() - 3);
 
             // Write file
-            ImageIO.write(this.working_image, filetype, this.img_file);
+            ImageIO.write(this.presentation_image, filetype, this.img_file);
 
             // Add YIQ mark
             if(this.current_state.isYIQ())
@@ -1033,13 +1006,13 @@ public class ApplicationWindow extends javax.swing.JFrame {
             {// ------ Critical Session ------
                 // Open selected image
                 this.img_file = file;
-                this.working_image = ImageIO.read(file);
-                this.backup_working_image = this.working_image;
+                this.presentation_image = ImageIO.read(file);
+                this.backup_working_image = Image.clone(this.presentation_image);
                 this.setTitle(file.getName() + " - Processador Digital de Imagem");
 
                 // Init a new session
-                this.current_state = new ApplicationState();
-                this.initial_state = new ApplicationState();
+                this.current_state = new State();
+                this.initial_state = new State();
 
                 this.undo_states.clear();
                 this.redo_states.clear();
@@ -1055,14 +1028,13 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.current_state.setYIQSpace(imageIsYIQ(new FileReader(file)));
 
                 // Update states
-                this.current_state.setImage(this.working_image);
+                this.current_state.setImage(this.presentation_image);
 
                 // Update presentation properties
-                this.updatePresentationProperties(this.working_image);
+                this.updatePresentationProperties(this.presentation_image);
                 this.clearImagePanel();
 
-                // Update presentation image
-                this.presentation_image = this.working_image;
+                System.gc();
             }// ------------------------------
             ApplicationWindow.sem_processing.release();
 
@@ -1125,18 +1097,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
         
         this.graphics_image_panel.setColor(Color.GRAY);
         this.graphics_image_panel.fillRect(
-            0, 
-            0, 
+            0, 0, 
             this.panel_presentation_image.getWidth(), 
             this.panel_presentation_image.getHeight()
         );
-    }
-    
-    private void updateWorkImage(BufferedImage img) {
-        // Update image
-        this.working_image = img;
-        this.presentation_image = img;
-        this.current_state.setImage(img);
     }
 
     private void refreshPanelImage() {
@@ -1147,23 +1111,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.graphics_image_panel.drawImage(this.presentation_image, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
     }
 
-    private void backupImageControler(Class requester) {
-        // If the requester is the last backup owner, the state will be restored.
-        if (this.backup_owner == requester) {
-            this.working_image = Image.clone(this.backup_working_image);
-        }
-
-        // If not, update state.
-        this.backup_owner = requester;
-        this.backup_working_image = Image.clone(this.working_image);
-    }
-
     private void applyTransformations() {
-        ApplicationState state = new ApplicationState();
+        State state = new State();
 
         try {
             state.setYIQSpace(this.current_state.isYIQ());
-            state.setImage(this.working_image);
+            state.setImage(this.presentation_image);
 
             this.initial_state.clone(state);
             this.redo_states.clear();
@@ -1175,14 +1128,13 @@ public class ApplicationWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro ao aplicar transformações!\nTente Novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
             // No handling needed!
         }
-
     }
 
     private void revertTransformations() {
         this.redo_states.clear();
         this.item_redo.setEnabled(false);
 
-        ApplicationState state = new ApplicationState();
+        State state = new State();
 
         try {
             state.clone(this.initial_state);
@@ -1231,6 +1183,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         // Disable itens menu Undo/UndoAll
         this.item_undo.setEnabled(false);
         this.item_undo_all.setEnabled(false);
+        
+        System.gc();
     }
     
     private void redoState() {
@@ -1257,23 +1211,27 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }
     
     private void saveState() {
-        ApplicationState state = new ApplicationState();
+        State state = new State();
         
         try {
             state.clone(this.current_state);
             this.undo_states.push(state);
 
-            if(!this.redo_states.empty())
+            if(!this.redo_states.empty()) {
                 this.redo_states.clear();
+                this.item_redo.setEnabled(false);
+            }
 
             this.item_undo.setEnabled(true);
             this.item_undo_all.setEnabled(true);
         } catch (NullPointerException ex) {
             // No handling needed!
         }
+
+        System.gc();
     }
     
-    private void restoreState(ApplicationState state) {
+    private void restoreState(State state) {
         try {
             ApplicationWindow.sem_processing.acquire();
             {// ------ Critical Session ------
@@ -1305,10 +1263,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.slider_median_filter.setValue(state.getMedianFilterValue());
                 this.label_median_filter_value.setText("" + state.getMedianFilterValue());
 
-                this.updateWorkImage(state.getImage());
+                this.presentation_image = state.getImage();
                 
-                this.backup_working_image = this.working_image;
-
                 this.enableControls(true);
             }// ------------------------------
             ApplicationWindow.sem_processing.release();
@@ -1333,13 +1289,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.button_sobel.setEnabled(enable);
         //this.button_laplaciano_filter.setEnabled(enable);
         this.button_custom_filter.setEnabled(enable);
-        //this.button_custom_filter_2.setEnabled(enable);
         this.button_negative.setEnabled(enable);
         this.button_apply.setEnabled(enable);
         this.button_revert.setEnabled(enable);
         this.menu_arquivo.setEnabled(enable);
         this.menu_editar.setEnabled(enable);
-        //this.file_manager.setEnabled(enable);
     }
     
     /**
@@ -1467,21 +1421,21 @@ public class ApplicationWindow extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     // Internal Image Control
-    private BufferedImage working_image = null;         // Working image (used during transformations)
+    //private BufferedImage working_image = null;         // Working image (used during transformations)
     private BufferedImage backup_working_image = null;  // Storage the last transformation
     private BufferedImage presentation_image = null;    // Presentation image
-    private BufferedImage img_processing;
+    private BufferedImage img_processing = null;
 
     // Control Properties
-    private Class backup_owner = null;      // Backup image owner
+    private DigitalProcess last_process = null;      // Backup image owner
     private final static Semaphore sem_processing = new Semaphore(1);
     private String yiq_mark = "JB-YIQ";
     
     // States Edition Control
-    private Stack<ApplicationState> undo_states = new Stack<>();      // Undo editions controller
-    private Stack<ApplicationState> redo_states = new Stack<>();      // Redo editions controller
-    private ApplicationState current_state;  // Current state
-    private ApplicationState initial_state;
+    private Stack<State> undo_states = new Stack<>();      // Undo editions controller
+    private Stack<State> redo_states = new Stack<>();      // Redo editions controller
+    private State current_state;  // Current state
+    private State initial_state;
 
     // Presentation Panel Properties
     private Graphics graphics_image_panel;
@@ -1491,8 +1445,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private int work_image_w;
 
     // Digital Image Processing
-    private final RGBtoYIQ rgb_to_yiq = new RGBtoYIQ();         // RGB to YIQ converter
-    private final YIQtoRGB yiq_to_rgb = new YIQtoRGB();         // YIQ to RGB converter
+    //private final YIQConversor yiq_conversor = new YIQConversor();         // RGB-YIQ-RGB converter
     private final Bands bands = new Bands();                    // Bands controller
     private final AdditiveBrightnes add_brightness = new AdditiveBrightnes();     // Additive Brightness controller
     private final MultiplicativeBrightnes mult_brightness = new MultiplicativeBrightnes();    // Multiplicative Brightness controller

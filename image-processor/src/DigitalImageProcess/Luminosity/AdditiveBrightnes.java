@@ -14,22 +14,20 @@ import DigitalImageProcess.DigitalProcess;
  * @author Jorismar
  */
 public class AdditiveBrightnes extends DigitalProcess {
+    @Override
+    protected int transform(BufferedImage img, int px, int py, Object arg) {
+        int C = (int)arg;
 
-	@Override
-	protected int transform(BufferedImage img, int px, int py, Object arg) {
+        Color color = new Color(img.getRGB(px, py));
 
-		Integer C = (Integer) arg;
+        int r = color.getRed()   + C;
+        int g = color.getGreen() + C;
+        int b = color.getBlue()  + C;
 
-		Color color = new Color(img.getRGB(px, py));
+        r = r < 0 ? 0: r > 255 ? 255: r;
+        g = g < 0 ? 0: g > 255 ? 255: g;
+        b = b < 0 ? 0: b > 255 ? 255: b;
 
-		int R = color.getRed() + C;
-		int G = color.getGreen() + C;
-		int B = color.getBlue() + C;
-
-		R = R < 0 ? 0: R > 255 ? 255: R;
-		G = G < 0 ? 0: G > 255 ? 255: G;
-		B = B < 0 ? 0: B > 255 ? 255: B;
-
-		return new Color(R, G, B).getRGB();
-	}
+        return new Color(r, g, b).getRGB();
+    }
 }

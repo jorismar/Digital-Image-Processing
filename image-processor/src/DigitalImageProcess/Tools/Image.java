@@ -16,12 +16,28 @@ public class Image {
         if(img == null)
             return null;
         
-        return new BufferedImage(
+        /***************************************************
+        BufferedImage image = new BufferedImage(
             img.getColorModel(), 
             img.copyData(null), 
             img.getColorModel().isAlphaPremultiplied(), 
             null
         );
+        ***************************************************/
+        
+        /***************************************************/
+        BufferedImage image = new BufferedImage(
+            img.getWidth(), 
+            img.getHeight(), 
+            img.getType()
+        );
+
+        for(int y = 0; y < img.getHeight(); y++)
+            for(int x = 0; x < img.getWidth(); x++)
+                image.setRGB(x, y, img.getRGB(x, y));
+        /***************************************************/
+        
+        return image;
     }
     
     public static int getProportionalWidth(int height, int width, int new_height) {

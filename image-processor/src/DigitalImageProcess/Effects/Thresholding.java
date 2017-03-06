@@ -8,6 +8,7 @@ package DigitalImageProcess.Effects;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import DigitalImageProcess.DigitalProcess;
+import DigitalImageProcess.Colors.YIQConversor;
 
 /**
  *
@@ -18,6 +19,15 @@ public class Thresholding extends DigitalProcess {
     protected int transform(BufferedImage img, int px, int py, Object arg) {
         Integer T = (Integer) arg;
 
+        double[] yiq = new YIQConversor().convertRGBtoYIQ(new Color(img.getRGB(px, py)));
+        
+        yiq[0] = yiq[0] > T ? T : yiq[0];
+        //yiq[1] = yiq[1] > T ? T : yiq[1];
+        //yiq[2] = yiq[2] > T ? T : yiq[2];
+        
+        return new Color((int)yiq[0], (int)yiq[1], (int)yiq[2]).getRGB();
+        
+        /*
         Color color = new Color(img.getRGB(px, py));
 
         int r = color.getRed();
@@ -29,5 +39,6 @@ public class Thresholding extends DigitalProcess {
         b = b > T ? T : b;
 
         return new Color(r, g, b).getRGB();
+        */
     }
 }

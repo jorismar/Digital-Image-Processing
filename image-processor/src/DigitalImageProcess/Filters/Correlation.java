@@ -42,6 +42,8 @@ public class Correlation extends DigitalProcess {
                 r += mask.getValue(mx, my) * color.getRed();
                 g += mask.getValue(mx, my) * color.getGreen();
                 b += mask.getValue(mx, my) * color.getBlue();
+                
+                color = null;
             }
         }
         

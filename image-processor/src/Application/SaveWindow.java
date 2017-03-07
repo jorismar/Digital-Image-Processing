@@ -49,7 +49,6 @@ public class SaveWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Salvar como");
-        setAlwaysOnTop(true);
         setLocationByPlatform(true);
 
         window_save_file.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);

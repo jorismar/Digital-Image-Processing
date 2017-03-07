@@ -17,7 +17,7 @@ import DigitalImageProcess.DigitalProcess;
 public class Correlation extends DigitalProcess {
     @Override
     protected int transform(BufferedImage img, int x, int y, Object arg) {
-        int[] rgb = this.applyMask(img, x, y, (Mask) arg);
+        int[] rgb = this.applyAndGetBands(img, x, y, (Mask) arg);
         
         rgb[0] = rgb[0] > 255 ? 255 : rgb[0] < 0 ? 0 : rgb[0];
         rgb[1] = rgb[1] > 255 ? 255 : rgb[1] < 0 ? 0 : rgb[1];
@@ -26,7 +26,11 @@ public class Correlation extends DigitalProcess {
         return new Color(rgb[0], rgb[1], rgb[1]).getRGB();
     }
     
-    public int[] applyMask(BufferedImage img, int x, int y, Mask mask) {
+    public int applyAndGetRGB(BufferedImage img, int x, int y, Mask mask) {
+        return this.transform(img, x, y, mask);
+    }
+    
+    public int[] applyAndGetBands(BufferedImage img, int x, int y, Mask mask) {
         int r = 0, g = 0, b = 0;
         
         for(int my = 0, py = y - mask.getHeight() / 2; my < mask.getHeight() && py < img.getHeight(); my++, py++) {
@@ -42,8 +46,6 @@ public class Correlation extends DigitalProcess {
                 r += mask.getValue(mx, my) * color.getRed();
                 g += mask.getValue(mx, my) * color.getGreen();
                 b += mask.getValue(mx, my) * color.getBlue();
-                
-                color = null;
             }
         }
         

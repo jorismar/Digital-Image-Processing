@@ -5,12 +5,10 @@
  */
 package Application.Utils;
 
-import DigitalImageProcess.Colors.ColorSpace;
-import DigitalImageProcess.Tools.Image;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JRadioButton;
+import DigitalImageProcess.DigitalProcess;
+import DigitalImageProcess.Colors.ColorSpace;
 
 /**
  *
@@ -25,6 +23,7 @@ public class State {
     private int average_filter_value;
     private int median_filter_value;
     private BufferedImage image;
+    private DigitalProcess last_process;
 
     public State() {
         this.color_space = ColorSpace.RGB;
@@ -35,6 +34,7 @@ public class State {
         this.average_filter_value = 3;
         this.median_filter_value = 3;
         this.image = null;
+        this.last_process = null;
     }
     
     public State(
@@ -45,7 +45,8 @@ public class State {
             int thresholding_M_value, 
             int average_filter_value, 
             int median_filter_value, 
-            BufferedImage image
+            BufferedImage image,
+            DigitalProcess last_process
     ) {
         this.color_space = color_space;
         this.band_selected = band_selected;
@@ -55,8 +56,17 @@ public class State {
         this.average_filter_value = average_filter_value;
         this.median_filter_value = median_filter_value;
         this.image = image;
+        this.last_process = last_process;
     }
 
+    public DigitalProcess getLastProcess() {
+        return last_process;
+    }
+
+    public void setLastProcess(DigitalProcess current_transf_owner) {
+        this.last_process = current_transf_owner;
+    }
+    
     public int getColorSpace() {
         return color_space;
     }

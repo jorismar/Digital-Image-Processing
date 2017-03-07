@@ -24,7 +24,7 @@ public class Average extends DigitalProcess {
         mask.fillMask(1);
         
         // Apply mask
-        int[] rgb = new Correlation().applyMask(img, px, py, mask);
+        int[] rgb = new Correlation().applyAndGetBands(img, px, py, mask);
         
     // ----- Calculates number of the processed pixels. ----- //
         

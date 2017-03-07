@@ -40,7 +40,6 @@ public class OpenWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Abrir");
-        setAlwaysOnTop(true);
         setLocationByPlatform(true);
 
         window_open_file.setCurrentDirectory(new java.io.File("D:\\Imagens"));

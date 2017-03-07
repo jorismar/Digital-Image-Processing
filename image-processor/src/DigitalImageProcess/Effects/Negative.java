@@ -16,8 +16,6 @@ import DigitalImageProcess.DigitalProcess;
  * @author Jorismar
  */
 public class Negative extends DigitalProcess {
-    private int current_color_space;
-
     @Override
     protected int transform(BufferedImage img, int px, int py, Object arg) {
         //int is_yiq = (boolean)arg;
@@ -38,6 +36,8 @@ public class Negative extends DigitalProcess {
         
         return new Color(r, g, b).getRGB();
     }
+
+    private int current_color_space;
 
     public Negative(int current_color_space) {
         this.current_color_space = current_color_space;

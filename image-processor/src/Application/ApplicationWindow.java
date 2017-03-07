@@ -140,7 +140,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Processador Digital de Imagem");
         setMinimumSize(new java.awt.Dimension(1024, 750));
-        setPreferredSize(new java.awt.Dimension(1024, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -160,11 +159,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         panel_presentation_image.setLayout(panel_presentation_imageLayout);
         panel_presentation_imageLayout.setHorizontalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 838, Short.MAX_VALUE)
+            .addGap(0, 831, Short.MAX_VALUE)
         );
         panel_presentation_imageLayout.setVerticalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 744, Short.MAX_VALUE)
+            .addGap(0, 752, Short.MAX_VALUE)
         );
 
         button_apply.setForeground(new java.awt.Color(51, 51, 51));
@@ -319,6 +318,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
         input_thresholding_value.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         input_thresholding_value.setText("0");
         input_thresholding_value.setEnabled(false);
+        input_thresholding_value.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                input_thresholding_valueFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                input_thresholding_valueFocusLost(evt);
+            }
+        });
 
         jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Aditivo");
@@ -361,7 +368,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         slider_mult_brightness.setMaximum(255);
         slider_mult_brightness.setMinimum(1);
-        slider_mult_brightness.setValue(slider_mult_brightness.getMinimum());
+        slider_mult_brightness.setValue(1);
         slider_mult_brightness.setEnabled(false);
         slider_mult_brightness.setPreferredSize(new java.awt.Dimension(148, 19));
         slider_mult_brightness.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -390,7 +397,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
         label_add_brightness_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_add_brightness_value.setText("" + slider_add_brightness.getValue());
         label_add_brightness_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        label_add_brightness_value.setPreferredSize(new java.awt.Dimension(63, 16));
+        label_add_brightness_value.setMaximumSize(new java.awt.Dimension(43, 22));
+        label_add_brightness_value.setMinimumSize(new java.awt.Dimension(43, 22));
+        label_add_brightness_value.setPreferredSize(new java.awt.Dimension(43, 22));
 
         label_average_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_average_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -430,9 +439,19 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
 
         text_mult_brightness_value.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        text_mult_brightness_value.setText("jTextField3");
+        text_mult_brightness_value.setText("" + (float)slider_mult_brightness.getMinimum());
         text_mult_brightness_value.setEnabled(false);
-        text_mult_brightness_value.setMaximumSize(new java.awt.Dimension(4, 20));
+        text_mult_brightness_value.setMaximumSize(new java.awt.Dimension(43, 22));
+        text_mult_brightness_value.setMinimumSize(new java.awt.Dimension(43, 22));
+        text_mult_brightness_value.setPreferredSize(new java.awt.Dimension(43, 22));
+        text_mult_brightness_value.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                text_mult_brightness_valueFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                text_mult_brightness_valueFocusLost(evt);
+            }
+        });
         text_mult_brightness_value.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 text_mult_brightness_valueKeyPressed(evt);
@@ -468,7 +487,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                     .addComponent(jSeparator5)
                     .addComponent(jSeparator4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 10, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel7)
                             .addComponent(jLabel12)
@@ -526,8 +545,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
                                 .addComponent(slider_add_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(text_mult_brightness_value, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                            .addComponent(label_add_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                            .addComponent(text_mult_brightness_value, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(label_add_brightness_value, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(1, 1, 1))
         );
         jPanel2Layout.setVerticalGroup(
@@ -792,7 +811,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_slider_add_brightnessStateChanged
 
     private void slider_mult_brightnessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_mult_brightnessStateChanged
-        this.text_mult_brightness_value.setText("" + this.slider_mult_brightness.getValue());
+        this.text_mult_brightness_value.setText("" + this.value_mult_brightness);
+        this.value_mult_brightness = this.slider_mult_brightness.getValue();
         //this.last_process = this.mult_brightness;
         //this.presentation_image = this.mult_brightness.applyAndGetRGB(this.backup_working_image, this.slider_mult_brightness.getValue());
     }//GEN-LAST:event_slider_mult_brightnessStateChanged
@@ -808,7 +828,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
             this.processImage(new Thresholding(this.current_state.getColorSpace()), threasholding_value);
             this.current_state.setThresholdingValue(threasholding_value);
         } catch (NumberFormatException ex) {
-            // No handling needed!
+            JOptionPane.showMessageDialog(this, "Valor inválido!\nVerifique os valores digitados e tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            this.input_thresholding_value.setText("");
         }
     }//GEN-LAST:event_button_thresholding_valueActionPerformed
 
@@ -873,9 +894,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
         if(this.mult_brightness != this.last_process)
             this.mult_brightness = new MultiplicativeBrightnes(this.current_state.getColorSpace());
         
-        int value = this.slider_mult_brightness.getValue();
-        this.processImage(this.mult_brightness, (float)value);
-        this.current_state.setMultBrightnessValue(value);
+        //int value = this.slider_mult_brightness.getValue();
+        this.processImage(this.mult_brightness, this.value_mult_brightness);
+        this.current_state.setMultBrightnessValue(this.value_mult_brightness);
     }//GEN-LAST:event_slider_mult_brightnessMouseReleased
 
     private void item_undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_undoActionPerformed
@@ -920,9 +941,40 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_button_laplaciano_filterActionPerformed
 
     private void text_mult_brightness_valueKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_text_mult_brightness_valueKeyPressed
-        if(evt.getKeyCode() == 10)
-            this.slider_mult_brightnessMouseReleased(null);
+        try {
+            if(evt.getKeyCode() == 10) {
+                float value = Float.parseFloat(this.text_mult_brightness_value.getText());
+            
+                if((int)value > this.slider_mult_brightness.getMaximum()) {
+                    JOptionPane.showMessageDialog(this, "O valor máximo suportado é " + this.slider_mult_brightness.getMaximum(), "Erro", JOptionPane.ERROR_MESSAGE);
+                    this.value_mult_brightness = this.slider_mult_brightness.getValue();
+                } else {
+                    this.value_mult_brightness = value;
+                    this.slider_mult_brightness.setValue((int) this.value_mult_brightness);
+                    this.slider_mult_brightnessMouseReleased(null);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Valor inválido!\nVerifique os valores digitados e tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            this.text_mult_brightness_value.setText("");
+        }
     }//GEN-LAST:event_text_mult_brightness_valueKeyPressed
+
+    private void text_mult_brightness_valueFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_text_mult_brightness_valueFocusGained
+        this.text_mult_brightness_value.setText("");
+    }//GEN-LAST:event_text_mult_brightness_valueFocusGained
+
+    private void text_mult_brightness_valueFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_text_mult_brightness_valueFocusLost
+        this.text_mult_brightness_value.setText("" + (float)this.current_state.getMultBrightnessValue());
+    }//GEN-LAST:event_text_mult_brightness_valueFocusLost
+
+    private void input_thresholding_valueFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_thresholding_valueFocusGained
+        this.input_thresholding_value.setText("");
+    }//GEN-LAST:event_input_thresholding_valueFocusGained
+
+    private void input_thresholding_valueFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_thresholding_valueFocusLost
+        this.input_thresholding_value.setText("" + this.current_state.getThresholdingValue());
+    }//GEN-LAST:event_input_thresholding_valueFocusLost
     
     private void processImage(DigitalProcess process, Object arg) {
         try {
@@ -1293,7 +1345,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.slider_add_brightness.setValue(state.getAddBrightnessValue());
                 this.label_add_brightness_value.setText("" + state.getAddBrightnessValue());
 
-                this.slider_mult_brightness.setValue(state.getMultBrightnessValue());
+                this.slider_mult_brightness.setValue((int)state.getMultBrightnessValue());
                 this.text_mult_brightness_value.setText("" + state.getMultBrightnessValue());
 
                 this.input_thresholding_value.setText("" + state.getThresholdingValue());
@@ -1503,6 +1555,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
     
     // Image Properties
     private File img_file;
+    
+    private float value_mult_brightness;
 
     // Extern Windows
     //private final SaveWindow window_save_as = new SaveWindow();

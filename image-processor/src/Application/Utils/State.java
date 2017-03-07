@@ -18,7 +18,7 @@ public class State {
     private int color_space;
     private JRadioButton band_selected;
     private int add_brightness_value;
-    private int mult_brightness_value;
+    private float mult_brightness_value;
     private int thresholding_M_value;
     private int average_filter_value;
     private int median_filter_value;
@@ -29,7 +29,7 @@ public class State {
         this.color_space = ColorSpace.RGB;
         this.band_selected = null;
         this.add_brightness_value = 0;
-        this.mult_brightness_value = 0;
+        this.mult_brightness_value = 1.0f;
         this.thresholding_M_value = 0;
         this.average_filter_value = 3;
         this.median_filter_value = 3;
@@ -91,11 +91,11 @@ public class State {
         this.add_brightness_value = add_brightness_value;
     }
 
-    public int getMultBrightnessValue() {
+    public float getMultBrightnessValue() {
         return mult_brightness_value;
     }
 
-    public void setMultBrightnessValue(int mult_brightness_value) {
+    public void setMultBrightnessValue(float mult_brightness_value) {
         this.mult_brightness_value = mult_brightness_value;
     }
 

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JRadioButton;
 import DigitalImageProcess.DigitalProcess;
 import DigitalImageProcess.Colors.ColorSpace;
+import DigitalImageProcess.Tools.Image;
 
 /**
  *
@@ -132,7 +133,7 @@ public class State {
     }
     
     public void clone(State state) throws NullPointerException {
-        this.image = state.getImage(); //Image.clone(state.getImage());
+        this.image = Image.clone(state.getImage()); //Image.clone(state.getImage());
         
         if(this.image == null)
             throw new NullPointerException();

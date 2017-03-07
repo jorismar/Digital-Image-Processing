@@ -139,7 +139,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Processador Digital de Imagem");
+        setMaximumSize(new java.awt.Dimension(1024, 750));
         setMinimumSize(new java.awt.Dimension(1024, 750));
+        setPreferredSize(new java.awt.Dimension(1024, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -154,6 +156,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 panel_presentation_imageAncestorResized(evt);
             }
         });
+        panel_presentation_image.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel_presentation_imageMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_presentation_imageLayout = new javax.swing.GroupLayout(panel_presentation_image);
         panel_presentation_image.setLayout(panel_presentation_imageLayout);
@@ -166,12 +173,23 @@ public class ApplicationWindow extends javax.swing.JFrame {
             .addGap(0, 752, Short.MAX_VALUE)
         );
 
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
+
         button_apply.setForeground(new java.awt.Color(51, 51, 51));
         button_apply.setText("Aplicar");
         button_apply.setEnabled(false);
         button_apply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_applyActionPerformed(evt);
+            }
+        });
+        button_apply.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                button_applyKeyPressed(evt);
             }
         });
 
@@ -218,7 +236,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel7.setText("Brilho");
 
         button_thresholding_value.setForeground(new java.awt.Color(51, 51, 51));
-        button_thresholding_value.setText("Valor");
+        button_thresholding_value.setText("Aplicar");
         button_thresholding_value.setEnabled(false);
         button_thresholding_value.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -322,8 +340,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 input_thresholding_valueFocusGained(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                input_thresholding_valueFocusLost(evt);
+        });
+        input_thresholding_value.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                input_thresholding_valueKeyPressed(evt);
             }
         });
 
@@ -367,7 +387,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
 
         slider_mult_brightness.setMaximum(255);
-        slider_mult_brightness.setMinimum(1);
         slider_mult_brightness.setValue(1);
         slider_mult_brightness.setEnabled(false);
         slider_mult_brightness.setPreferredSize(new java.awt.Dimension(148, 19));
@@ -389,6 +408,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         button_thresholding_average.setForeground(new java.awt.Color(51, 51, 51));
         button_thresholding_average.setText("Média");
         button_thresholding_average.setEnabled(false);
+        button_thresholding_average.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_thresholding_averageActionPerformed(evt);
+            }
+        });
 
         jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("Média");
@@ -435,6 +459,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         button_revert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_revertActionPerformed(evt);
+            }
+        });
+        button_revert.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                button_revertKeyPressed(evt);
             }
         });
 
@@ -806,15 +835,17 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
     private void slider_add_brightnessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_add_brightnessStateChanged
         this.label_add_brightness_value.setText("" + this.slider_add_brightness.getValue());
-        //this.last_process = this.add_brightness;
-        //this.presentation_image = this.add_brightness.applyAndGetRGB(this.backup_working_image, this.slider_add_brightness.getValue());
+        this.last_process = this.add_brightness;
+        this.presentation_image = this.add_brightness.apply(this.backup_working_image, this.slider_add_brightness.getValue());
     }//GEN-LAST:event_slider_add_brightnessStateChanged
 
     private void slider_mult_brightnessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_mult_brightnessStateChanged
-        this.text_mult_brightness_value.setText("" + this.value_mult_brightness);
+        this.text_mult_brightness_value.setText("" + (float)this.slider_mult_brightness.getValue());
+        if(this.slider_mult_brightness.getValue() == (int) this.value_mult_brightness)
+            return;
         this.value_mult_brightness = this.slider_mult_brightness.getValue();
-        //this.last_process = this.mult_brightness;
-        //this.presentation_image = this.mult_brightness.applyAndGetRGB(this.backup_working_image, this.slider_mult_brightness.getValue());
+        this.last_process = this.mult_brightness;
+        this.presentation_image = this.mult_brightness.apply(this.backup_working_image, (float)this.slider_mult_brightness.getValue());
     }//GEN-LAST:event_slider_mult_brightnessStateChanged
 
     private void panel_presentation_imageAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panel_presentation_imageAncestorResized
@@ -824,9 +855,18 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
     private void button_thresholding_valueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_thresholding_valueActionPerformed
         try {
-            int threasholding_value = Integer.parseInt(this.input_thresholding_value.getText());
-            this.processImage(new Thresholding(this.current_state.getColorSpace()), threasholding_value);
-            this.current_state.setThresholdingValue(threasholding_value);
+            int value = Integer.parseInt(this.input_thresholding_value.getText());
+
+            if(value < 0 || value > 255) {
+                JOptionPane.showMessageDialog(this, "O valor é inválido.\nValores suportados: [0, 255].", "Erro", JOptionPane.ERROR_MESSAGE);
+                this.input_thresholding_value.setText("0");
+                return;
+            }
+            
+            System.out.println("passou " + value);
+
+            this.processImage(new Thresholding(this.current_state.getColorSpace()), value);
+            this.current_state.setThresholdingValue(value);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Valor inválido!\nVerifique os valores digitados e tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
             this.input_thresholding_value.setText("");
@@ -945,14 +985,16 @@ public class ApplicationWindow extends javax.swing.JFrame {
             if(evt.getKeyCode() == 10) {
                 float value = Float.parseFloat(this.text_mult_brightness_value.getText());
             
-                if((int)value > this.slider_mult_brightness.getMaximum()) {
-                    JOptionPane.showMessageDialog(this, "O valor máximo suportado é " + this.slider_mult_brightness.getMaximum(), "Erro", JOptionPane.ERROR_MESSAGE);
-                    this.value_mult_brightness = this.slider_mult_brightness.getValue();
-                } else {
-                    this.value_mult_brightness = value;
-                    this.slider_mult_brightness.setValue((int) this.value_mult_brightness);
-                    this.slider_mult_brightnessMouseReleased(null);
+                if(value < 0 || value > 255) {
+                    JOptionPane.showMessageDialog(this, "O valor inválido.\nValores suportados: [0, 255].", "Erro", JOptionPane.ERROR_MESSAGE);
+                    this.value_mult_brightness = (float)this.slider_mult_brightness.getValue();
+                    return;
                 }
+
+                this.value_mult_brightness = value;
+                this.slider_mult_brightness.setValue((int)this.value_mult_brightness);
+                this.slider_mult_brightnessMouseReleased(null);
+                
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Valor inválido!\nVerifique os valores digitados e tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -972,9 +1014,33 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.input_thresholding_value.setText("");
     }//GEN-LAST:event_input_thresholding_valueFocusGained
 
-    private void input_thresholding_valueFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_input_thresholding_valueFocusLost
-        this.input_thresholding_value.setText("" + this.current_state.getThresholdingValue());
-    }//GEN-LAST:event_input_thresholding_valueFocusLost
+    private void input_thresholding_valueKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_input_thresholding_valueKeyPressed
+        if(evt.getKeyCode() == 10) {
+            this.button_thresholding_valueActionPerformed(null);
+        }
+    }//GEN-LAST:event_input_thresholding_valueKeyPressed
+
+    private void button_applyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_button_applyKeyPressed
+        if(evt.getKeyCode() == 10) {
+            this.button_applyActionPerformed(null);
+        }
+    }//GEN-LAST:event_button_applyKeyPressed
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        this.button_apply.requestFocus();
+    }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void panel_presentation_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_presentation_imageMouseClicked
+        this.button_apply.requestFocus();
+    }//GEN-LAST:event_panel_presentation_imageMouseClicked
+
+    private void button_thresholding_averageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_thresholding_averageActionPerformed
+        this.processImage(new Thresholding(this.current_state.getColorSpace()), null);
+    }//GEN-LAST:event_button_thresholding_averageActionPerformed
+
+    private void button_revertKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_button_revertKeyPressed
+        this.button_revertActionPerformed(null);
+    }//GEN-LAST:event_button_revertKeyPressed
     
     private void processImage(DigitalProcess process, Object arg) {
         try {
@@ -1006,6 +1072,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.clearImagePanel();
                 
                 this.enableControls(true);
+                this.button_apply.requestFocus();
 
                 System.gc();
             }// ------------------------------
@@ -1099,6 +1166,13 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.img_file = file;
                 this.presentation_image = ImageIO.read(file);
                 this.backup_working_image = Image.clone(this.presentation_image);
+                
+                DigitalProcess.TEMP_IMAGE = new BufferedImage(
+                    this.presentation_image.getWidth(), 
+                    this.presentation_image.getHeight(), 
+                    this.presentation_image.getType()
+                );
+
                 this.setTitle(file.getName() + " - Processador Digital de Imagem");
 
                 // Init a new session
@@ -1215,6 +1289,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
             // Restore default state
             this.restoreState(state);
+            
+            this.button_revert.requestFocus();
         } catch (NullPointerException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao aplicar transformações!\nTente Novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
             // No handling needed!

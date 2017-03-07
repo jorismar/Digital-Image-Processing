@@ -7,7 +7,6 @@ package DigitalImageProcess.Filters;
 
 import DigitalImageProcess.DigitalProcess;
 import DigitalImageProcess.Tools.Mask;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**

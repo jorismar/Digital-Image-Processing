@@ -13,18 +13,21 @@ import java.awt.image.BufferedImage;
  */
 
 public abstract class DigitalProcess {
+    public static BufferedImage TEMP_IMAGE = null;
+    
     public BufferedImage apply(BufferedImage img, Object arg) {
-        BufferedImage output = new BufferedImage(
-            img.getWidth(), 
-            img.getHeight(), 
-            img.getType()
-        );
+        if(DigitalProcess.TEMP_IMAGE == null)
+            DigitalProcess.TEMP_IMAGE = new BufferedImage(
+                img.getWidth(), 
+                img.getHeight(), 
+                img.getType()
+            );
         
         for(int y = 0; y < img.getHeight(); y++)
             for(int x = 0; x < img.getWidth(); x++)
-                output.setRGB(x, y, this.transform(img, x, y, arg));
+                DigitalProcess.TEMP_IMAGE.setRGB(x, y, this.transform(img, x, y, arg));
         
-        return output;
+        return DigitalProcess.TEMP_IMAGE;
     }
     
     protected abstract int transform(BufferedImage img, int px, int py, Object arg);

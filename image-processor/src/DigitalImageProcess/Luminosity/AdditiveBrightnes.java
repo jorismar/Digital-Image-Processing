@@ -38,9 +38,13 @@ public class AdditiveBrightnes extends DigitalProcess {
         return new Color(r, g, b).getRGB();
     }
 
-    private final int current_color_space;
+    private int current_color_space;
 
     public AdditiveBrightnes(int current_color_space) {
         this.current_color_space = current_color_space;
+    }
+
+    public void setColorSpace(int color_space) {
+        this.current_color_space = color_space;
     }
 }

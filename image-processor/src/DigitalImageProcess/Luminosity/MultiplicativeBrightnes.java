@@ -29,9 +29,13 @@ public class MultiplicativeBrightnes extends DigitalProcess {
         return new Color((int)r, (int)g, (int)b).getRGB();		
     }
 
-    private final int current_color_space;
+    private int current_color_space;
 
     public MultiplicativeBrightnes(int current_color_space) {
         this.current_color_space = current_color_space;
+    }
+
+    public void setColorSpace(int color_space) {
+        this.current_color_space = color_space;
     }
 }

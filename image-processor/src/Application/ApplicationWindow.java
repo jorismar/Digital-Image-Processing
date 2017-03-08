@@ -15,8 +15,11 @@ import DigitalImageProcess.Luminosity.MultiplicativeBrightnes;
 import DigitalImageProcess.Tools.Image;
 import DigitalImageProcess.Tools.Mask;
 import Application.Utils.State;
+import DigitalImageProcess.Colors.ColorBalance;
 import DigitalImageProcess.Colors.ColorSpace;
+import DigitalImageProcess.Colors.GrayScale;
 import DigitalImageProcess.Filters.Laplaciano;
+import DigitalImageProcess.Tools.SaltAndPepper;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -52,10 +55,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
     public ApplicationWindow() {
         initComponents();
         try {
-            this.img_processing = ImageIO.read(new File("resrc/img/processing.png"));
+            this.img_processing_msg = ImageIO.read(new File("resrc/img/processing.png"));
             this.setIconImage(new ImageIcon("resrc/img/app_icon.png").getImage());
         } catch (IOException ex) {
-            this.img_processing = null;
+            this.img_processing_msg = null;
         }
     }
 
@@ -72,8 +75,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jTextField2 = new javax.swing.JTextField();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         panel_presentation_image = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        panel_side = new javax.swing.JPanel();
         button_apply = new javax.swing.JButton();
         selector_band_g_mono = new javax.swing.JRadioButton();
         jLabel11 = new javax.swing.JLabel();
@@ -93,13 +99,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         slider_average_filter = new javax.swing.JSlider();
         jLabel6 = new javax.swing.JLabel();
         selector_rgb_space = new javax.swing.JRadioButton();
-        jSlider4 = new javax.swing.JSlider();
         button_custom_filter = new javax.swing.JToggleButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
-        jSlider5 = new javax.swing.JSlider();
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
         input_thresholding_value = new javax.swing.JTextField();
@@ -107,7 +111,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         slider_median_filter = new javax.swing.JSlider();
         slider_add_brightness = new javax.swing.JSlider();
         slider_mult_brightness = new javax.swing.JSlider();
-        jSlider1 = new javax.swing.JSlider();
         button_thresholding_average = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         label_add_brightness_value = new javax.swing.JLabel();
@@ -118,16 +121,27 @@ public class ApplicationWindow extends javax.swing.JFrame {
         button_revert = new javax.swing.JButton();
         text_mult_brightness_value = new javax.swing.JTextField();
         button_laplaciano_filter = new javax.swing.JButton();
+        label_band_b = new javax.swing.JLabel();
+        label_band_r = new javax.swing.JLabel();
+        label_band_g = new javax.swing.JLabel();
+        slider_band_r = new javax.swing.JSlider();
+        slider_band_g = new javax.swing.JSlider();
+        slider_band_b = new javax.swing.JSlider();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menu_arquivo = new javax.swing.JMenu();
+        menu_file = new javax.swing.JMenu();
         item_open = new javax.swing.JMenuItem();
-        item_salvar = new javax.swing.JMenuItem();
-        item_salvar_como = new javax.swing.JMenuItem();
-        menu_editar = new javax.swing.JMenu();
+        item_salve = new javax.swing.JMenuItem();
+        item_salve_as = new javax.swing.JMenuItem();
+        menu_edit = new javax.swing.JMenu();
         item_undo = new javax.swing.JMenuItem();
         item_redo = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         item_undo_all = new javax.swing.JMenuItem();
+        menu_effects = new javax.swing.JMenu();
+        menu_noise = new javax.swing.JMenu();
+        item_salt_and_pepper = new javax.swing.JMenuItem();
+        menu_mode = new javax.swing.JMenu();
+        item_gray_scale = new javax.swing.JMenuItem();
 
         jButton3.setText("jButton3");
 
@@ -136,6 +150,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jMenuItem2.setText("jMenuItem2");
 
         jTextField2.setText("jTextField2");
+
+        jMenu1.setText("File");
+        jMenuBar2.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar2.add(jMenu2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Processador Digital de Imagem");
@@ -166,16 +186,16 @@ public class ApplicationWindow extends javax.swing.JFrame {
         panel_presentation_image.setLayout(panel_presentation_imageLayout);
         panel_presentation_imageLayout.setHorizontalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 831, Short.MAX_VALUE)
+            .addGap(0, 724, Short.MAX_VALUE)
         );
         panel_presentation_imageLayout.setVerticalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        panel_side.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel2MouseClicked(evt);
+                panel_sideMouseClicked(evt);
             }
         });
 
@@ -207,11 +227,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("G");
-        jLabel5.setEnabled(false);
 
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("R");
-        jLabel4.setEnabled(false);
 
         selector_band_r_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_r_mono.setText("R");
@@ -286,7 +304,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("B");
-        jLabel6.setEnabled(false);
 
         selector_rgb_space.setForeground(new java.awt.Color(51, 51, 51));
         selector_rgb_space.setText("RGB");
@@ -296,10 +313,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 selector_rgb_spaceActionPerformed(evt);
             }
         });
-
-        jSlider4.setMaximum(255);
-        jSlider4.setValue(127);
-        jSlider4.setEnabled(false);
 
         button_custom_filter.setForeground(new java.awt.Color(51, 51, 51));
         button_custom_filter.setText("Custom");
@@ -319,10 +332,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(51, 51, 51));
         jLabel10.setText("Limiarização");
-
-        jSlider5.setMaximum(255);
-        jSlider5.setValue(127);
-        jSlider5.setEnabled(false);
 
         input_thresholding_value.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         input_thresholding_value.setText("0");
@@ -391,10 +400,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 slider_mult_brightnessMouseReleased(evt);
             }
         });
-
-        jSlider1.setMaximum(255);
-        jSlider1.setValue(127);
-        jSlider1.setEnabled(false);
 
         button_thresholding_average.setForeground(new java.awt.Color(51, 51, 51));
         button_thresholding_average.setText("Média");
@@ -487,79 +492,121 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+        label_band_b.setForeground(new java.awt.Color(51, 51, 51));
+        label_band_b.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_band_b.setText("0");
+        label_band_b.setPreferredSize(new java.awt.Dimension(43, 22));
+
+        label_band_r.setForeground(new java.awt.Color(51, 51, 51));
+        label_band_r.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_band_r.setText("0");
+        label_band_r.setPreferredSize(new java.awt.Dimension(43, 22));
+
+        label_band_g.setForeground(new java.awt.Color(51, 51, 51));
+        label_band_g.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_band_g.setText("0");
+        label_band_g.setPreferredSize(new java.awt.Dimension(43, 22));
+
+        slider_band_r.setMaximum(255);
+        slider_band_r.setMinimum(-255);
+        slider_band_r.setValue(0);
+        slider_band_r.setEnabled(false);
+        slider_band_r.setPreferredSize(new java.awt.Dimension(148, 19));
+        slider_band_r.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                slider_band_rStateChanged(evt);
+            }
+        });
+        slider_band_r.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                slider_band_rMouseReleased(evt);
+            }
+        });
+
+        slider_band_g.setMaximum(255);
+        slider_band_g.setMinimum(-255);
+        slider_band_g.setValue(0);
+        slider_band_g.setEnabled(false);
+        slider_band_g.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                slider_band_gStateChanged(evt);
+            }
+        });
+        slider_band_g.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                slider_band_gMouseReleased(evt);
+            }
+        });
+
+        slider_band_b.setMaximum(255);
+        slider_band_b.setMinimum(-255);
+        slider_band_b.setValue(0);
+        slider_band_b.setEnabled(false);
+        slider_band_b.setPreferredSize(new java.awt.Dimension(148, 19));
+        slider_band_b.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                slider_band_bStateChanged(evt);
+            }
+        });
+        slider_band_b.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                slider_band_bMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panel_sideLayout = new javax.swing.GroupLayout(panel_side);
+        panel_side.setLayout(panel_sideLayout);
+        panel_sideLayout.setHorizontalGroup(
+            panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_sideLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jSeparator3)
+                    .addComponent(jSeparator5)
+                    .addComponent(jSeparator4)
                     .addComponent(jSeparator2)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(slider_mult_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(text_mult_brightness_value, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addComponent(button_apply, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(button_revert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jSeparator1)
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(slider_add_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(label_add_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_sideLayout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
                         .addComponent(slider_average_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(6, 6, 6)
                         .addComponent(label_average_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(panel_sideLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addGap(4, 4, 4)
                         .addComponent(slider_median_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(6, 6, 6)
                         .addComponent(label_median_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator3)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_apply, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(button_revert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jSeparator1)
-                    .addComponent(jSeparator5)
-                    .addComponent(jSeparator4)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(button_negative)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(button_sobel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(11, 11, 11)
-                                .addComponent(button_laplaciano_filter)
-                                .addGap(8, 8, 8)
-                                .addComponent(button_custom_filter))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(slider_mult_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(slider_add_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(text_mult_brightness_value, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(label_add_brightness_value, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_band_r_mono)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_band_g_mono)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_band_b_mono))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSlider5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel10)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel12)
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(selector_rgb_space)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(selector_yiq_space))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addGroup(panel_sideLayout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(input_thresholding_value, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -567,28 +614,52 @@ public class ApplicationWindow extends javax.swing.JFrame {
                                 .addComponent(button_thresholding_value)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(button_thresholding_average, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(button_sobel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(button_laplaciano_filter)
+                                .addGap(8, 8, 8)
+                                .addComponent(button_custom_filter))
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_band_r_mono)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_band_g_mono)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_band_b_mono)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_sideLayout.createSequentialGroup()
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel6)
+                                .addComponent(jLabel5)))
+                        .addGap(1, 1, 1)
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_sideLayout.createSequentialGroup()
+                                .addComponent(slider_band_b, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(label_band_b, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_sideLayout.createSequentialGroup()
+                                .addComponent(slider_band_g, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(selector_rgb_space)
+                                .addComponent(label_band_g, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_sideLayout.createSequentialGroup()
+                                .addComponent(slider_band_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_yiq_space))
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel7))
-                        .addGap(25, 25, 25)))
-                .addGap(1, 1, 1))
+                                .addComponent(label_band_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(0, 1, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        panel_sideLayout.setVerticalGroup(
+            panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_sideLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selector_rgb_space)
                     .addComponent(selector_yiq_space))
                 .addGap(18, 18, 18)
@@ -596,36 +667,45 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(selector_band_r_mono)
                     .addComponent(selector_band_g_mono)
                     .addComponent(selector_band_b_mono))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSlider5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(0, 0, 0)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(label_band_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panel_sideLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel4))
+                                    .addComponent(slider_band_r, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(slider_band_g, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5)))
+                            .addComponent(label_band_g, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6)
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(slider_band_b, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(label_band_b, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(slider_add_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(label_add_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(slider_mult_brightness, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(text_mult_brightness_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -634,7 +714,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(input_thresholding_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button_thresholding_value)
@@ -642,22 +722,22 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panel_sideLayout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel13)
                             .addComponent(slider_average_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(label_average_filter_value))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(slider_median_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(button_custom_filter)
                             .addComponent(button_sobel)
                             .addComponent(button_laplaciano_filter))
@@ -667,15 +747,15 @@ public class ApplicationWindow extends javax.swing.JFrame {
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(label_median_filter_value))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(button_revert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button_apply, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         text_mult_brightness_value.setText("" + slider_mult_brightness.getValue());
 
-        menu_arquivo.setForeground(new java.awt.Color(51, 51, 51));
-        menu_arquivo.setText("Arquivo");
+        menu_file.setForeground(new java.awt.Color(51, 51, 51));
+        menu_file.setText("Arquivo");
 
         item_open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         item_open.setText("Abrir");
@@ -684,32 +764,32 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 item_openActionPerformed(evt);
             }
         });
-        menu_arquivo.add(item_open);
+        menu_file.add(item_open);
 
-        item_salvar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        item_salvar.setText("Salvar");
-        item_salvar.setEnabled(false);
-        item_salvar.addActionListener(new java.awt.event.ActionListener() {
+        item_salve.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        item_salve.setText("Salvar");
+        item_salve.setEnabled(false);
+        item_salve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                item_salvarActionPerformed(evt);
+                item_salveActionPerformed(evt);
             }
         });
-        menu_arquivo.add(item_salvar);
+        menu_file.add(item_salve);
 
-        item_salvar_como.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        item_salvar_como.setText("Salvar como...");
-        item_salvar_como.setEnabled(false);
-        item_salvar_como.addActionListener(new java.awt.event.ActionListener() {
+        item_salve_as.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        item_salve_as.setText("Salvar como...");
+        item_salve_as.setEnabled(false);
+        item_salve_as.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                item_salvar_comoActionPerformed(evt);
+                item_salve_asActionPerformed(evt);
             }
         });
-        menu_arquivo.add(item_salvar_como);
+        menu_file.add(item_salve_as);
 
-        jMenuBar1.add(menu_arquivo);
+        jMenuBar1.add(menu_file);
 
-        menu_editar.setForeground(new java.awt.Color(51, 51, 51));
-        menu_editar.setText("Editar");
+        menu_edit.setForeground(new java.awt.Color(51, 51, 51));
+        menu_edit.setText("Editar");
 
         item_undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         item_undo.setText("Desfazer");
@@ -719,7 +799,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 item_undoActionPerformed(evt);
             }
         });
-        menu_editar.add(item_undo);
+        menu_edit.add(item_undo);
 
         item_redo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         item_redo.setText("Refazer");
@@ -729,8 +809,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 item_redoActionPerformed(evt);
             }
         });
-        menu_editar.add(item_redo);
-        menu_editar.add(jSeparator6);
+        menu_edit.add(item_redo);
+        menu_edit.add(jSeparator6);
 
         item_undo_all.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         item_undo_all.setText("Desfazer Tudo");
@@ -740,9 +820,39 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 item_undo_allActionPerformed(evt);
             }
         });
-        menu_editar.add(item_undo_all);
+        menu_edit.add(item_undo_all);
 
-        jMenuBar1.add(menu_editar);
+        jMenuBar1.add(menu_edit);
+
+        menu_effects.setText("Efeitos");
+
+        menu_noise.setText("Ruído");
+        menu_noise.setEnabled(false);
+
+        item_salt_and_pepper.setText("Sal e Pimenta");
+        item_salt_and_pepper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_salt_and_pepperActionPerformed(evt);
+            }
+        });
+        menu_noise.add(item_salt_and_pepper);
+
+        menu_effects.add(menu_noise);
+
+        menu_mode.setText("Modo");
+        menu_mode.setEnabled(false);
+
+        item_gray_scale.setText("Escala de cinza");
+        item_gray_scale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_gray_scaleActionPerformed(evt);
+            }
+        });
+        menu_mode.add(item_gray_scale);
+
+        menu_effects.add(menu_mode);
+
+        jMenuBar1.add(menu_effects);
 
         setJMenuBar(jMenuBar1);
 
@@ -752,7 +862,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(2, 2, 2)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panel_side, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -761,8 +871,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
             .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addComponent(panel_side, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -792,13 +902,13 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.current_state.setBandSelector(this.selector_band_r_mono);
     }//GEN-LAST:event_selector_band_r_monoActionPerformed
 
-    private void item_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salvarActionPerformed
+    private void item_salveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salveActionPerformed
         try {
             this.save();
         } catch (IOException ex) {
             // No handling needed!
         }
-    }//GEN-LAST:event_item_salvarActionPerformed
+    }//GEN-LAST:event_item_salveActionPerformed
 
     private void selector_yiq_spaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selector_yiq_spaceActionPerformed
         if (!this.selector_yiq_space.isSelected()) {
@@ -883,8 +993,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 return;
             }
             
-            System.out.println("passou " + value);
-
             this.processImage(new Thresholding(this.current_state.getColorSpace()), value);
             this.current_state.setThresholdingValue(value);
         } catch (NumberFormatException ex) {
@@ -966,9 +1074,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.undoAll();
     }//GEN-LAST:event_item_undo_allActionPerformed
 
-    private void item_salvar_comoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salvar_comoActionPerformed
+    private void item_salve_asActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salve_asActionPerformed
         new SaveWindow().setVisible(true);
-    }//GEN-LAST:event_item_salvar_comoActionPerformed
+    }//GEN-LAST:event_item_salve_asActionPerformed
 
     private void item_openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_openActionPerformed
         new OpenWindow().setVisible(true);
@@ -1037,9 +1145,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_button_applyKeyPressed
 
-    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+    private void panel_sideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_sideMouseClicked
         this.button_apply.requestFocus();
-    }//GEN-LAST:event_jPanel2MouseClicked
+    }//GEN-LAST:event_panel_sideMouseClicked
 
     private void panel_presentation_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_presentation_imageMouseClicked
         this.button_apply.requestFocus();
@@ -1056,6 +1164,87 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private void button_laplaciano_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_laplaciano_filterActionPerformed
         this.processImage(new Laplaciano(), null);
     }//GEN-LAST:event_button_laplaciano_filterActionPerformed
+
+    private void item_salt_and_pepperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_salt_and_pepperActionPerformed
+        try {
+            float rate = Float.parseFloat(JOptionPane.showInputDialog("Taxa de aplicação [0.0, 1.0]:"));
+            
+            if(rate < 0 || rate > 1)
+                throw new NumberFormatException();
+            
+            this.processImage(new SaltAndPepper(), rate);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Valor inválido!\nVerifique os valores digitados e tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            this.item_salt_and_pepperActionPerformed(null);
+        }
+    }//GEN-LAST:event_item_salt_and_pepperActionPerformed
+
+    private void item_gray_scaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_gray_scaleActionPerformed
+        this.processImage(new GrayScale(), null);
+    }//GEN-LAST:event_item_gray_scaleActionPerformed
+
+    private void slider_band_rStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_band_rStateChanged
+        this.label_band_r.setText("" + this.slider_band_r.getValue());
+        
+        if(this.last_process != this.color_balance) {
+            this.last_process = this.color_balance;
+            this.backup_working_image = this.presentation_image;
+        }
+        
+        this.color_balance_values[0] = this.slider_band_r.getValue();
+        
+        this.presentation_image = this.color_balance.apply(this.backup_working_image, this.color_balance_values);
+    }//GEN-LAST:event_slider_band_rStateChanged
+
+    private void slider_band_gStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_band_gStateChanged
+        this.label_band_g.setText("" + this.slider_band_g.getValue());
+        
+        if(this.last_process != this.color_balance) {
+            this.last_process = this.color_balance;
+            this.backup_working_image = this.presentation_image;
+        }
+        
+        this.color_balance_values[1] = this.slider_band_g.getValue();
+        
+        this.presentation_image = this.color_balance.apply(this.backup_working_image, this.color_balance_values);
+    }//GEN-LAST:event_slider_band_gStateChanged
+
+    private void slider_band_bStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_band_bStateChanged
+        this.label_band_b.setText("" + this.slider_band_b.getValue());
+        
+        if(this.last_process != this.color_balance) {
+            this.last_process = this.color_balance;
+            this.backup_working_image = this.presentation_image;
+        }
+        
+        this.color_balance_values[2] = this.slider_band_b.getValue();
+        
+        this.presentation_image = this.color_balance.apply(this.backup_working_image, this.color_balance_values);
+    }//GEN-LAST:event_slider_band_bStateChanged
+
+    private void slider_band_rMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_band_rMouseReleased
+        if(!this.slider_band_r.isEnabled())
+            return;
+        
+        this.processImage(this.color_balance, this.color_balance_values);
+        this.current_state.setColorBalance(this.color_balance_values);
+    }//GEN-LAST:event_slider_band_rMouseReleased
+
+    private void slider_band_gMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_band_gMouseReleased
+        if(!this.slider_band_g.isEnabled())
+            return;
+        
+        this.processImage(this.color_balance, this.color_balance_values);
+        this.current_state.setColorBalance(this.color_balance_values);
+    }//GEN-LAST:event_slider_band_gMouseReleased
+
+    private void slider_band_bMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_band_bMouseReleased
+        if(!this.slider_band_b.isEnabled())
+            return;
+        
+        this.processImage(this.color_balance, this.color_balance_values);
+        this.current_state.setColorBalance(this.color_balance_values);
+    }//GEN-LAST:event_slider_band_bMouseReleased
     
     private void processImage(DigitalProcess process, Object arg) {
         try {
@@ -1067,8 +1256,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.saveState();
                 
                 // Show processing message
-                this.updatePresentationProperties(this.img_processing);
-                this.graphics_image_panel.drawImage(this.img_processing, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
+                this.updatePresentationProperties(this.img_processing_msg);
+                this.graphics_image_panel.drawImage(this.img_processing_msg, this.work_image_x, this.work_image_y, this.work_image_w, this.work_image_h, this);
 
                 if(this.last_process != process) {
                     this.backup_working_image = this.presentation_image;
@@ -1078,7 +1267,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                     this.presentation_image = this.backup_working_image;
                 
                 // Process image
-                this.presentation_image = process.apply(this.presentation_image, arg);
+                this.presentation_image = Image.clone(process.apply(this.presentation_image, arg));
                 
                 this.current_state.setImage(this.presentation_image);
                 
@@ -1201,8 +1390,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.item_undo.setEnabled(false);
                 this.item_undo_all.setEnabled(false);
                 this.item_redo.setEnabled(false);
-                this.item_salvar.setEnabled(true);
-                this.item_salvar_como.setEnabled(true);
+                this.item_salve.setEnabled(true);
+                this.item_salve_as.setEnabled(true);
 
                 // Check space color
                 this.current_state.setColorSpace(imageIsYIQ(new FileReader(file)));
@@ -1453,6 +1642,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
                 this.presentation_image = state.getImage();
                 
+                this.slider_band_r.setValue(state.getColorBalance()[0]);
+                this.slider_band_g.setValue(state.getColorBalance()[1]);
+                this.slider_band_b.setValue(state.getColorBalance()[2]);
+                
                 this.enableControls(true);
                 this.button_apply.requestFocus();
             }// ------------------------------
@@ -1481,10 +1674,15 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.button_negative.setEnabled(enable);
         this.button_apply.setEnabled(enable);
         this.button_revert.setEnabled(enable);
-        this.menu_arquivo.setEnabled(enable);
-        this.menu_editar.setEnabled(enable);
+        this.menu_file.setEnabled(enable);
+        this.menu_edit.setEnabled(enable);
         this.text_mult_brightness_value.setEnabled(enable);
         this.button_laplaciano_filter.setEnabled(enable);
+        this.menu_noise.setEnabled(enable);
+        this.menu_mode.setEnabled(enable);
+        this.slider_band_r.setEnabled(enable);
+        this.slider_band_g.setEnabled(enable);
+        this.slider_band_b.setEnabled(enable);
     }
     
     /**
@@ -1562,10 +1760,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private javax.swing.JButton button_thresholding_average;
     private javax.swing.JButton button_thresholding_value;
     private javax.swing.JTextField input_thresholding_value;
+    private javax.swing.JMenuItem item_gray_scale;
     private javax.swing.JMenuItem item_open;
     private javax.swing.JMenuItem item_redo;
-    private javax.swing.JMenuItem item_salvar;
-    private javax.swing.JMenuItem item_salvar_como;
+    private javax.swing.JMenuItem item_salt_and_pepper;
+    private javax.swing.JMenuItem item_salve;
+    private javax.swing.JMenuItem item_salve_as;
     private javax.swing.JMenuItem item_undo;
     private javax.swing.JMenuItem item_undo_all;
     private javax.swing.JButton jButton3;
@@ -1583,26 +1783,32 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
-    private javax.swing.JSlider jSlider1;
-    private javax.swing.JSlider jSlider4;
-    private javax.swing.JSlider jSlider5;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel label_add_brightness_value;
     private javax.swing.JLabel label_average_filter_value;
+    private javax.swing.JLabel label_band_b;
+    private javax.swing.JLabel label_band_g;
+    private javax.swing.JLabel label_band_r;
     private javax.swing.JLabel label_median_filter_value;
-    private javax.swing.JMenu menu_arquivo;
-    private javax.swing.JMenu menu_editar;
+    private javax.swing.JMenu menu_edit;
+    private javax.swing.JMenu menu_effects;
+    private javax.swing.JMenu menu_file;
+    private javax.swing.JMenu menu_mode;
+    private javax.swing.JMenu menu_noise;
     private javax.swing.JPanel panel_presentation_image;
+    private javax.swing.JPanel panel_side;
     private javax.swing.JRadioButton selector_band_b_mono;
     private javax.swing.JRadioButton selector_band_g_mono;
     private javax.swing.JRadioButton selector_band_r_mono;
@@ -1610,6 +1816,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private javax.swing.JRadioButton selector_yiq_space;
     private javax.swing.JSlider slider_add_brightness;
     private javax.swing.JSlider slider_average_filter;
+    private javax.swing.JSlider slider_band_b;
+    private javax.swing.JSlider slider_band_g;
+    private javax.swing.JSlider slider_band_r;
     private javax.swing.JSlider slider_median_filter;
     private javax.swing.JSlider slider_mult_brightness;
     private javax.swing.JTextField text_mult_brightness_value;
@@ -1619,7 +1828,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     //private BufferedImage working_image = null;         // Working image (used during transformations)
     private BufferedImage backup_working_image = null;  // Storage the last transformation
     private BufferedImage presentation_image = null;    // Presentation image
-    private BufferedImage img_processing = null;
+    private BufferedImage img_processing_msg = null;
 
     // Control Properties
     private DigitalProcess last_process = null;      // Backup image owner
@@ -1647,6 +1856,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     //private final Thresholding thresholding = new Thresholding();   // Thresholding (Limiarização)
     private final Average average_filter = new Average();       // Average filter
     private final Median median_filter = new Median();          // Median filter
+    private final ColorBalance color_balance = new ColorBalance();
     //private final Sobel sobel = new Sobel();    // Sobel filter
     //private final Negative negative = new Negative();           // Negative transformation
     //private final Correlation correlation_filter = new Correlation();
@@ -1655,6 +1865,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private File img_file;
     
     private float value_mult_brightness;
+    private int[] color_balance_values = new int[]{0, 0, 0};
 
     // Extern Windows
     //private final SaveWindow window_save_as = new SaveWindow();

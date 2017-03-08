@@ -54,24 +54,28 @@ public class Thresholding extends DigitalProcess {
         int result;
         Color color = new Color(img.getRGB(px, py));
         
+        float r = color.getRed();
+        float g = color.getGreen();
+        float b = color.getBlue();
+
         if(this.current_color_space == ColorSpace.YIQ) {
-            double[] yiq = new YIQConversor().convertRGBtoYIQ(color);
+            //float[] yiq = new YIQConversor().convertRGBtoYIQ(color);
+            
+            //float r = yiq[0];
+            //float g = yiq[1];
+            //float b = yiq[2];
+            
+            r = r > T ? 255 : 0;
+            //g = g > T ? T : g;
+            //b = b > T ? T : b;
 
-            yiq[0] = yiq[0] > T ? T : yiq[0];
-            //yiq[1] = yiq[1] > T ? T : yiq[1];
-            //yiq[2] = yiq[2] > T ? T : yiq[2];
-
-            result = new Color((int)yiq[0], (int)yiq[1], (int)yiq[2]).getRGB();
+            result = new Color((int)Math.round(r), (int)Math.round(g), (int)Math.round(b)).getRGB();
         } else {
-            int r = color.getRed();
-            int g = color.getGreen();
-            int b = color.getBlue();
+            r = r > T ? 255 : 0;
+            g = g > T ? 255 : 0;
+            b = b > T ? 255 : 0;
 
-            r = r > T ? T : r;
-            g = g > T ? T : g;
-            b = b > T ? T : b;
-
-            result = new Color(r, g, b).getRGB();
+            result = new Color((int)Math.round(r), (int)Math.round(g), (int)Math.round(b)).getRGB();
         }
         
         return result;

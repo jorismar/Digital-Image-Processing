@@ -25,6 +25,7 @@ public class State {
     private int median_filter_value;
     private BufferedImage image;
     private DigitalProcess last_process;
+    private int[] color_balance;
 
     public State() {
         this.color_space = ColorSpace.RGB;
@@ -36,6 +37,7 @@ public class State {
         this.median_filter_value = 3;
         this.image = null;
         this.last_process = null;
+        this.color_balance = new int[]{0, 0, 0};
     }
     
     public State(
@@ -47,7 +49,8 @@ public class State {
             int average_filter_value, 
             int median_filter_value, 
             BufferedImage image,
-            DigitalProcess last_process
+            DigitalProcess last_process,
+            int[] color_balance
     ) {
         this.color_space = color_space;
         this.band_selected = band_selected;
@@ -58,6 +61,19 @@ public class State {
         this.median_filter_value = median_filter_value;
         this.image = image;
         this.last_process = last_process;
+        this.color_balance = color_balance;
+    }
+
+    public int[] getColorBalance() {
+        return color_balance;
+    }
+
+    public void setColorBalance(int[] color_balance) {
+        this.color_balance = new int[]{
+            color_balance[0],
+            color_balance[1],
+            color_balance[2]
+        };
     }
 
     public DigitalProcess getLastProcess() {
@@ -145,5 +161,10 @@ public class State {
         this.thresholding_M_value = state.getThresholdingValue();
         this.average_filter_value = state.getAverageFilterValue();
         this.median_filter_value = state.getMedianFilterValue();
+        this.color_balance = new int[] {
+            state.getColorBalance()[0],
+            state.getColorBalance()[1],
+            state.getColorBalance()[2]
+        };
     }
 }

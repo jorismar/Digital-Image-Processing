@@ -19,7 +19,7 @@ import DigitalImageProcess.Colors.ColorBalance;
 import DigitalImageProcess.Colors.ColorSpace;
 import DigitalImageProcess.Colors.GrayScale;
 import DigitalImageProcess.Filters.Laplaciano;
-import DigitalImageProcess.Tools.SaltAndPepper;
+import DigitalImageProcess.Effects.SaltAndPepper;
 
 import java.awt.Color;
 import java.awt.Graphics;

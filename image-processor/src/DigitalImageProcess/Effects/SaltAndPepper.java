@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DigitalImageProcess.Tools;
+package DigitalImageProcess.Effects;
 
 import DigitalImageProcess.DigitalProcess;
 import java.awt.Color;
@@ -35,14 +35,14 @@ public class SaltAndPepper extends DigitalProcess {
                 generator.nextInt(img.getHeight()), // y
                 255                                 // color (white)
             );
-            
+/*            
             // Apply pepper
             this.transform(
                 DigitalProcess.TEMP_IMAGE,    
                 generator.nextInt(img.getWidth()),  // x
                 generator.nextInt(img.getHeight()), // y
                 0                                   // color (white)
-            );
+            );*/
         }
         
         return DigitalProcess.TEMP_IMAGE;
@@ -50,13 +50,22 @@ public class SaltAndPepper extends DigitalProcess {
     
     @Override
     protected int transform(BufferedImage img, int px, int py, Object arg) {
-        int value = (int) arg;
+        Color color = new Color(img.getRGB(px, py));
         
-        if(img.getRGB(px, py) == value)
-            value = value == 0 ? 255 : 0;
-        
-        img.setRGB(px, py, new Color(value, value, value).getRGB());
-        
+        if(color.getRed() == color.getGreen() && color.getRed() == color.getBlue()) {
+            int value = new Random().nextInt(2) == 0 ? 0 : 255;
+            img.setRGB(px, py, new Color(value, value, value).getRGB());
+        } else {
+            int select_band = new Random().nextInt(3);
+            
+            if(select_band == 0)
+                img.setRGB(px, py, new Color(255, 0, 0).getRGB());
+            else if(select_band == 1)
+                img.setRGB(px, py, new Color(0, 255, 0).getRGB());
+            else
+                img.setRGB(px, py, new Color(0, 0, 255).getRGB());
+        }
+            
         return 0;
     }
 }

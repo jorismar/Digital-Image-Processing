@@ -18,11 +18,18 @@ import Application.Utils.State;
 import DigitalImageProcess.Colors.ColorBalance;
 import DigitalImageProcess.Colors.ColorSpace;
 import DigitalImageProcess.Colors.GrayScale;
+import DigitalImageProcess.Effects.Merge;
 import DigitalImageProcess.Filters.Laplaciano;
 import DigitalImageProcess.Effects.SaltAndPepper;
+import DigitalImageProcess.Effects.Subtract;
+import DigitalImageProcess.Effects.Sum;
+import DigitalImageProcess.Luminosity.HistogramEqualization;
+import DigitalImageProcess.Luminosity.HistogramExpansion;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,6 +41,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -78,6 +87,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jSeparator7 = new javax.swing.JSeparator();
+        jMenu4 = new javax.swing.JMenu();
         panel_presentation_image = new javax.swing.JPanel();
         panel_side = new javax.swing.JPanel();
         button_apply = new javax.swing.JButton();
@@ -99,7 +110,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         slider_average_filter = new javax.swing.JSlider();
         jLabel6 = new javax.swing.JLabel();
         selector_rgb_space = new javax.swing.JRadioButton();
-        button_custom_filter = new javax.swing.JToggleButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -127,6 +137,9 @@ public class ApplicationWindow extends javax.swing.JFrame {
         slider_band_r = new javax.swing.JSlider();
         slider_band_g = new javax.swing.JSlider();
         slider_band_b = new javax.swing.JSlider();
+        jLabel15 = new javax.swing.JLabel();
+        label_elapsed_time = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu_file = new javax.swing.JMenu();
         item_open = new javax.swing.JMenuItem();
@@ -142,6 +155,22 @@ public class ApplicationWindow extends javax.swing.JFrame {
         item_salt_and_pepper = new javax.swing.JMenuItem();
         menu_mode = new javax.swing.JMenu();
         item_gray_scale = new javax.swing.JMenuItem();
+        menu_balance = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        item_histogram_equalizer = new javax.swing.JMenuItem();
+        item_histogram_expansion = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        menu_images = new javax.swing.JMenu();
+        item_sum_images = new javax.swing.JMenuItem();
+        item_sub_images = new javax.swing.JMenuItem();
+        item_merge_images = new javax.swing.JMenuItem();
+        menu_custom = new javax.swing.JMenu();
+        menu_filters = new javax.swing.JMenu();
+        item_custom_average = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        item_quickselection = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         jButton3.setText("jButton3");
 
@@ -157,11 +186,11 @@ public class ApplicationWindow extends javax.swing.JFrame {
         jMenu2.setText("Edit");
         jMenuBar2.add(jMenu2);
 
+        jMenu4.setText("jMenu4");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Processador Digital de Imagem");
-        setMaximumSize(new java.awt.Dimension(1024, 750));
         setMinimumSize(new java.awt.Dimension(1024, 750));
-        setPreferredSize(new java.awt.Dimension(1024, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -186,7 +215,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
         panel_presentation_image.setLayout(panel_presentation_imageLayout);
         panel_presentation_imageLayout.setHorizontalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 724, Short.MAX_VALUE)
+            .addGap(0, 722, Short.MAX_VALUE)
         );
         panel_presentation_imageLayout.setVerticalGroup(
             panel_presentation_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,7 +228,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        button_apply.setForeground(new java.awt.Color(51, 51, 51));
         button_apply.setText("Aplicar");
         button_apply.setEnabled(false);
         button_apply.addActionListener(new java.awt.event.ActionListener() {
@@ -213,7 +241,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        selector_band_g_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_g_mono.setText("G");
         selector_band_g_mono.setEnabled(false);
         selector_band_g_mono.addActionListener(new java.awt.event.ActionListener() {
@@ -222,16 +249,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setForeground(new java.awt.Color(51, 51, 51));
         jLabel11.setText("M");
 
-        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("G");
 
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("R");
 
-        selector_band_r_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_r_mono.setText("R");
         selector_band_r_mono.setEnabled(false);
         selector_band_r_mono.addActionListener(new java.awt.event.ActionListener() {
@@ -240,11 +263,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
         jLabel7.setText("Brilho");
 
-        button_thresholding_value.setForeground(new java.awt.Color(51, 51, 51));
         button_thresholding_value.setText("Aplicar");
         button_thresholding_value.setEnabled(false);
         button_thresholding_value.addActionListener(new java.awt.event.ActionListener() {
@@ -253,14 +273,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(51, 51, 51));
         jLabel12.setText("Filtros");
 
-        jLabel9.setForeground(new java.awt.Color(51, 51, 51));
         jLabel9.setText("Multiplicativo");
 
-        selector_yiq_space.setForeground(new java.awt.Color(51, 51, 51));
         selector_yiq_space.setText("YIQ");
         selector_yiq_space.setEnabled(false);
         selector_yiq_space.addActionListener(new java.awt.event.ActionListener() {
@@ -269,15 +285,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Bandas");
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Espaço de Cores");
 
-        selector_band_b_mono.setForeground(new java.awt.Color(51, 51, 51));
         selector_band_b_mono.setText("B");
         selector_band_b_mono.setEnabled(false);
         selector_band_b_mono.addActionListener(new java.awt.event.ActionListener() {
@@ -302,10 +313,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("B");
 
-        selector_rgb_space.setForeground(new java.awt.Color(51, 51, 51));
         selector_rgb_space.setText("RGB");
         selector_rgb_space.setEnabled(false);
         selector_rgb_space.addActionListener(new java.awt.event.ActionListener() {
@@ -314,23 +323,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        button_custom_filter.setForeground(new java.awt.Color(51, 51, 51));
-        button_custom_filter.setText("Custom");
-        button_custom_filter.setEnabled(false);
-        button_custom_filter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button_custom_filterActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setForeground(new java.awt.Color(51, 51, 51));
         jLabel14.setText("Mediana");
 
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Monocromático");
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(51, 51, 51));
         jLabel10.setText("Limiarização");
 
         input_thresholding_value.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -347,7 +343,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Aditivo");
 
         slider_median_filter.setMaximum(30);
@@ -401,7 +396,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        button_thresholding_average.setForeground(new java.awt.Color(51, 51, 51));
         button_thresholding_average.setText("Média");
         button_thresholding_average.setEnabled(false);
         button_thresholding_average.addActionListener(new java.awt.event.ActionListener() {
@@ -410,10 +404,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("Média");
 
-        label_add_brightness_value.setForeground(new java.awt.Color(51, 51, 51));
         label_add_brightness_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_add_brightness_value.setText("" + slider_add_brightness.getValue());
         label_add_brightness_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -421,17 +413,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
         label_add_brightness_value.setMinimumSize(new java.awt.Dimension(43, 22));
         label_add_brightness_value.setPreferredSize(new java.awt.Dimension(43, 22));
 
-        label_average_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_average_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_average_filter_value.setText("" + slider_average_filter.getMinimum());
         label_average_filter_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        label_median_filter_value.setForeground(new java.awt.Color(51, 51, 51));
         label_median_filter_value.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_median_filter_value.setText("" + slider_median_filter.getMinimum());
         label_median_filter_value.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        button_sobel.setForeground(new java.awt.Color(51, 51, 51));
         button_sobel.setText("Sobel");
         button_sobel.setEnabled(false);
         button_sobel.addActionListener(new java.awt.event.ActionListener() {
@@ -440,7 +429,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        button_negative.setForeground(new java.awt.Color(51, 51, 51));
         button_negative.setText("Negativo");
         button_negative.setEnabled(false);
         button_negative.addActionListener(new java.awt.event.ActionListener() {
@@ -449,7 +437,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        button_revert.setForeground(new java.awt.Color(51, 51, 51));
         button_revert.setText("Reverter");
         button_revert.setEnabled(false);
         button_revert.addActionListener(new java.awt.event.ActionListener() {
@@ -483,7 +470,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        button_laplaciano_filter.setForeground(new java.awt.Color(51, 51, 51));
         button_laplaciano_filter.setText("Laplaciano");
         button_laplaciano_filter.setEnabled(false);
         button_laplaciano_filter.addActionListener(new java.awt.event.ActionListener() {
@@ -492,17 +478,14 @@ public class ApplicationWindow extends javax.swing.JFrame {
             }
         });
 
-        label_band_b.setForeground(new java.awt.Color(51, 51, 51));
         label_band_b.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_band_b.setText("0");
         label_band_b.setPreferredSize(new java.awt.Dimension(43, 22));
 
-        label_band_r.setForeground(new java.awt.Color(51, 51, 51));
         label_band_r.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_band_r.setText("0");
         label_band_r.setPreferredSize(new java.awt.Dimension(43, 22));
 
-        label_band_g.setForeground(new java.awt.Color(51, 51, 51));
         label_band_g.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_band_g.setText("0");
         label_band_g.setPreferredSize(new java.awt.Dimension(43, 22));
@@ -585,51 +568,17 @@ public class ApplicationWindow extends javax.swing.JFrame {
                     .addGroup(panel_sideLayout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
-                        .addComponent(slider_average_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(slider_average_filter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(6, 6, 6)
                         .addComponent(label_average_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel_sideLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addGap(4, 4, 4)
-                        .addComponent(slider_median_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(slider_median_filter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(6, 6, 6)
                         .addComponent(label_median_filter_value, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel_sideLayout.createSequentialGroup()
-                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(button_negative)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel12)
-                            .addGroup(panel_sideLayout.createSequentialGroup()
-                                .addComponent(selector_rgb_space)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_yiq_space))
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addGroup(panel_sideLayout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(input_thresholding_value, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(button_thresholding_value)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(button_thresholding_average, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panel_sideLayout.createSequentialGroup()
-                                .addComponent(button_sobel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(11, 11, 11)
-                                .addComponent(button_laplaciano_filter)
-                                .addGap(8, 8, 8)
-                                .addComponent(button_custom_filter))
-                            .addGroup(panel_sideLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_band_r_mono)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_band_g_mono)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector_band_b_mono)))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_sideLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(panel_sideLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -650,8 +599,42 @@ public class ApplicationWindow extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_sideLayout.createSequentialGroup()
                                 .addComponent(slider_band_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(label_band_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 1, Short.MAX_VALUE))
+                                .addComponent(label_band_r, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panel_sideLayout.createSequentialGroup()
+                        .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel12)
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(selector_rgb_space)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_yiq_space))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(input_thresholding_value, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(button_thresholding_value)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(button_thresholding_average, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_band_r_mono)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_band_g_mono)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector_band_b_mono))
+                            .addGroup(panel_sideLayout.createSequentialGroup()
+                                .addComponent(button_sobel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(button_laplaciano_filter)
+                                .addGap(11, 11, 11)
+                                .addComponent(button_negative)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panel_sideLayout.setVerticalGroup(
             panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -738,12 +721,10 @@ public class ApplicationWindow extends javax.swing.JFrame {
                             .addComponent(slider_median_filter, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panel_sideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(button_custom_filter)
                             .addComponent(button_sobel)
-                            .addComponent(button_laplaciano_filter))
-                        .addGap(0, 0, 0)
-                        .addComponent(button_negative)
-                        .addGap(18, 18, 18)
+                            .addComponent(button_laplaciano_filter)
+                            .addComponent(button_negative))
+                        .addGap(50, 50, 50)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(label_median_filter_value))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -754,7 +735,16 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         text_mult_brightness_value.setText("" + slider_mult_brightness.getValue());
 
-        menu_file.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel15.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel15.setText("Tempo gasto: ");
+
+        label_elapsed_time.setForeground(new java.awt.Color(51, 51, 51));
+        label_elapsed_time.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        label_elapsed_time.setText("0");
+
+        jLabel17.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel17.setText("seg");
+
         menu_file.setText("Arquivo");
 
         item_open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
@@ -788,7 +778,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         jMenuBar1.add(menu_file);
 
-        menu_edit.setForeground(new java.awt.Color(51, 51, 51));
         menu_edit.setText("Editar");
 
         item_undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
@@ -852,7 +841,100 @@ public class ApplicationWindow extends javax.swing.JFrame {
 
         menu_effects.add(menu_mode);
 
+        menu_balance.setText("Balanço");
+        menu_balance.setEnabled(false);
+
+        jMenu3.setText("Histograma");
+
+        item_histogram_equalizer.setText("Equalizar");
+        item_histogram_equalizer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_histogram_equalizerActionPerformed(evt);
+            }
+        });
+        jMenu3.add(item_histogram_equalizer);
+
+        item_histogram_expansion.setText("Expandir");
+        item_histogram_expansion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_histogram_expansionActionPerformed(evt);
+            }
+        });
+        jMenu3.add(item_histogram_expansion);
+
+        menu_balance.add(jMenu3);
+
+        menu_effects.add(menu_balance);
+        menu_effects.add(jSeparator9);
+
+        menu_images.setText("Imagens");
+        menu_images.setEnabled(false);
+
+        item_sum_images.setText("Somar");
+        item_sum_images.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_sum_imagesActionPerformed(evt);
+            }
+        });
+        menu_images.add(item_sum_images);
+
+        item_sub_images.setText("Subtrair");
+        item_sub_images.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_sub_imagesActionPerformed(evt);
+            }
+        });
+        menu_images.add(item_sub_images);
+
+        item_merge_images.setText("Unir");
+        item_merge_images.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_merge_imagesActionPerformed(evt);
+            }
+        });
+        menu_images.add(item_merge_images);
+
+        menu_effects.add(menu_images);
+
         jMenuBar1.add(menu_effects);
+
+        menu_custom.setText("Personalizar");
+
+        menu_filters.setText("Filtros");
+        menu_filters.setEnabled(false);
+
+        item_custom_average.setText("Média");
+        item_custom_average.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_custom_averageActionPerformed(evt);
+            }
+        });
+        menu_filters.add(item_custom_average);
+
+        jMenu5.setText("Mediana");
+
+        item_quickselection.setText("Use QuickSelection");
+        item_quickselection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_quickselectionActionPerformed(evt);
+            }
+        });
+        jMenu5.add(item_quickselection);
+
+        menu_filters.add(jMenu5);
+        menu_filters.add(jSeparator8);
+
+        jMenuItem3.setText("Máscara");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        menu_filters.add(jMenuItem3);
+
+        menu_custom.add(menu_filters);
+
+        jMenuBar1.add(menu_custom);
 
         setJMenuBar(jMenuBar1);
 
@@ -863,16 +945,31 @@ public class ApplicationWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(2, 2, 2)
                 .addComponent(panel_side, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label_elapsed_time)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(panel_side, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panel_presentation_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel15)
+                    .addComponent(label_elapsed_time)
+                    .addComponent(jLabel17)))
         );
 
         pack();
@@ -1006,7 +1103,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
             return;
         
         int value = this.slider_average_filter.getValue();
-        this.processImage(this.average_filter, value);
+        this.processImage(this.average_filter, new int[]{value, value});
         this.current_state.setAverageFilterValue(value);
     }//GEN-LAST:event_slider_average_filterMouseReleased
 
@@ -1079,21 +1176,57 @@ public class ApplicationWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_item_salve_asActionPerformed
 
     private void item_openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_openActionPerformed
-        new OpenWindow().setVisible(true);
+        Object lock = new Object();
+        OpenWindow open = new OpenWindow();
+        ApplicationWindow editor = this;
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                synchronized(lock) {
+                    try {
+                        // Wait for the file chooser window to finish.
+                        lock.wait();
+                        
+                        if (open.getFileChooser().getSelectedFile() == null)
+                            return;
+                        
+                        // Open file image
+                        editor.openImageFile(open.getFileChooser().getSelectedFile());
+                        
+                        ApplicationWindow.current_open_dir = open.getFileChooser().getCurrentDirectory();
+                        
+                        // Store current work directory
+                        current_open_dir = open.getFileChooser().getCurrentDirectory();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        
+        thread.start();
+        
+        synchronized(lock) {
+            // Register a listener of close window
+            open.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent arg0) {
+                    synchronized (lock) {
+                        open.setVisible(false);
+                        lock.notify();
+                    }
+                }                
+            });
+
+            // Open window
+            open.setVisible(true);
+        }
     }//GEN-LAST:event_item_openActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
 
     }//GEN-LAST:event_formWindowClosed
-
-    private void button_custom_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_custom_filterActionPerformed
-        //MaskWindow window_mask = new MaskWindow();
-        //window_mask.setTitle("Mask");
-        //window_mask.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        //window_mask.setLocationRelativeTo(null);
-        //window_mask.setVisible(true);
-        this.window_mask.setVisible(!this.window_mask.isVisible());
-    }//GEN-LAST:event_button_custom_filterActionPerformed
 
     private void slider_add_brightnessMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slider_add_brightnessMouseDragged
         this.slider_add_brightness.setToolTipText("" + this.slider_add_brightness.getValue());
@@ -1245,6 +1378,144 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.processImage(this.color_balance, this.color_balance_values);
         this.current_state.setColorBalance(this.color_balance_values);
     }//GEN-LAST:event_slider_band_bMouseReleased
+
+    private void item_histogram_equalizerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_histogram_equalizerActionPerformed
+        this.processImage(new HistogramEqualization(), null);
+    }//GEN-LAST:event_item_histogram_equalizerActionPerformed
+
+    private void item_histogram_expansionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_histogram_expansionActionPerformed
+        this.processImage(new HistogramExpansion(), null);
+    }//GEN-LAST:event_item_histogram_expansionActionPerformed
+
+    private void item_quickselectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_quickselectionActionPerformed
+        if (this.median_filter.getType() == Median.USE_SORTING) {
+            this.median_filter.setType(Median.USE_QUICKSELECTION);
+            this.item_quickselection.setText("Use Sorting");
+        } else if (this.median_filter.getType() == Median.USE_QUICKSELECTION) {
+            this.median_filter.setType(Median.USE_SORTING);
+            this.item_quickselection.setText("Use QuickSelection");
+        }
+    }//GEN-LAST:event_item_quickselectionActionPerformed
+
+    private void item_custom_averageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_custom_averageActionPerformed
+        Object lock = new Object();
+        CustomAverageFilterWindow customAvgFilter = new CustomAverageFilterWindow();
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                synchronized(lock) {
+                    try {
+                        // Wait for the file chooser window to finish.
+                        lock.wait();
+                        
+                        if (customAvgFilter.getNumLines() == 0 || customAvgFilter.getNumColumns() == 0)
+                            return;
+                        
+                        processImage(
+                                average_filter,
+                                new int[]{
+                                    customAvgFilter.getNumLines(),
+                                    customAvgFilter.getNumColumns()
+                                }
+                        );
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        
+        thread.start();
+        
+        synchronized(lock) {
+            // Register a listener of close window
+            customAvgFilter.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent arg0) {
+                    synchronized (lock) {
+                        customAvgFilter.setVisible(false);
+                        lock.notify();
+                    }
+                }                
+            });
+
+            // Open window
+            customAvgFilter.setVisible(true);
+        }        
+    }//GEN-LAST:event_item_custom_averageActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        //MaskWindow window_mask = new MaskWindow();
+        //window_mask.setTitle("Mask");
+        //window_mask.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //window_mask.setLocationRelativeTo(null);
+        //window_mask.setVisible(true);
+        this.window_mask.setVisible(!this.window_mask.isVisible());
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void item_sum_imagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_sum_imagesActionPerformed
+        this.multipleImageOperations(new Sum());
+    }//GEN-LAST:event_item_sum_imagesActionPerformed
+
+    private void item_sub_imagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_sub_imagesActionPerformed
+        this.multipleImageOperations(new Subtract());
+    }//GEN-LAST:event_item_sub_imagesActionPerformed
+
+    private void item_merge_imagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_merge_imagesActionPerformed
+        this.multipleImageOperations(new Merge());
+    }//GEN-LAST:event_item_merge_imagesActionPerformed
+    
+    private void multipleImageOperations(DigitalProcess proc) {
+        Object lock = new Object();
+        OpenWindow open = new OpenWindow();
+        ApplicationWindow editor = this;
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                synchronized(lock) {
+                    try {
+                        // Wait for the file chooser window to finish.
+                        lock.wait();
+                        
+                        if (open.getFileChooser().getSelectedFile() == null)
+                            return;
+                        
+                        // Open file image
+                        BufferedImage img = ImageIO.read(open.getFileChooser().getSelectedFile());
+                        
+                        // Store current work directory
+                        current_open_dir = open.getFileChooser().getCurrentDirectory();
+                        
+                        // Sum images
+                        editor.processImage(proc, img);
+                    } catch (InterruptedException | IOException ex) {
+                        Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        
+        thread.start();
+        
+        synchronized(lock) {
+            // Register a listener of close window
+            open.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent arg0) {
+                    synchronized (lock) {
+                        open.setVisible(false);
+                        lock.notify();
+                    }
+                }                
+            });
+
+            // Open window
+            open.setVisible(true);
+        }
+    }
+    
     
     private void processImage(DigitalProcess process, Object arg) {
         try {
@@ -1277,6 +1548,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 
                 this.enableControls(true);
                 this.button_apply.requestFocus();
+                this.label_elapsed_time.setText("" + (double) DigitalProcess.elapsedTime / 1000000000.0);
 
                 System.gc();
             }// ------------------------------
@@ -1371,7 +1643,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
                 this.presentation_image = ImageIO.read(file);
                 this.backup_working_image = Image.clone(this.presentation_image);
                 
-                DigitalProcess.TEMP_IMAGE = new BufferedImage(
+                DigitalProcess.processedImage = new BufferedImage(
                     this.presentation_image.getWidth(), 
                     this.presentation_image.getHeight(), 
                     this.presentation_image.getType()
@@ -1670,7 +1942,6 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.slider_median_filter.setEnabled(enable);
         this.button_sobel.setEnabled(enable);
         this.button_laplaciano_filter.setEnabled(enable);
-        this.button_custom_filter.setEnabled(enable);
         this.button_negative.setEnabled(enable);
         this.button_apply.setEnabled(enable);
         this.button_revert.setEnabled(enable);
@@ -1683,6 +1954,12 @@ public class ApplicationWindow extends javax.swing.JFrame {
         this.slider_band_r.setEnabled(enable);
         this.slider_band_g.setEnabled(enable);
         this.slider_band_b.setEnabled(enable);
+        this.menu_effects.setEnabled(enable);
+        this.menu_custom.setEnabled(enable);
+        this.menu_balance.setEnabled(enable);
+        this.menu_filters.setEnabled(enable);
+        this.menu_images.setEnabled(enable);
+        
     }
     
     /**
@@ -1746,13 +2023,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
         });
     }
 
-    public void customFilterButtonSwitch() {
-        this.button_custom_filter.doClick();
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_apply;
-    public javax.swing.JToggleButton button_custom_filter;
     private javax.swing.JButton button_laplaciano_filter;
     private javax.swing.JButton button_negative;
     private javax.swing.JButton button_revert;
@@ -1760,12 +2032,19 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private javax.swing.JButton button_thresholding_average;
     private javax.swing.JButton button_thresholding_value;
     private javax.swing.JTextField input_thresholding_value;
+    private javax.swing.JMenuItem item_custom_average;
     private javax.swing.JMenuItem item_gray_scale;
+    private javax.swing.JMenuItem item_histogram_equalizer;
+    private javax.swing.JMenuItem item_histogram_expansion;
+    private javax.swing.JMenuItem item_merge_images;
     private javax.swing.JMenuItem item_open;
+    private javax.swing.JMenuItem item_quickselection;
     private javax.swing.JMenuItem item_redo;
     private javax.swing.JMenuItem item_salt_and_pepper;
     private javax.swing.JMenuItem item_salve;
     private javax.swing.JMenuItem item_salve_as;
+    private javax.swing.JMenuItem item_sub_images;
+    private javax.swing.JMenuItem item_sum_images;
     private javax.swing.JMenuItem item_undo;
     private javax.swing.JMenuItem item_undo_all;
     private javax.swing.JButton jButton3;
@@ -1775,6 +2054,8 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1785,26 +2066,38 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel label_add_brightness_value;
     private javax.swing.JLabel label_average_filter_value;
     private javax.swing.JLabel label_band_b;
     private javax.swing.JLabel label_band_g;
     private javax.swing.JLabel label_band_r;
+    private javax.swing.JLabel label_elapsed_time;
     private javax.swing.JLabel label_median_filter_value;
+    private javax.swing.JMenu menu_balance;
+    private javax.swing.JMenu menu_custom;
     private javax.swing.JMenu menu_edit;
     private javax.swing.JMenu menu_effects;
     private javax.swing.JMenu menu_file;
+    private javax.swing.JMenu menu_filters;
+    private javax.swing.JMenu menu_images;
     private javax.swing.JMenu menu_mode;
     private javax.swing.JMenu menu_noise;
     private javax.swing.JPanel panel_presentation_image;
@@ -1855,7 +2148,7 @@ public class ApplicationWindow extends javax.swing.JFrame {
     private MultiplicativeBrightnes mult_brightness = new MultiplicativeBrightnes(ColorSpace.RGB);    // Multiplicative Brightness controller
     //private final Thresholding thresholding = new Thresholding();   // Thresholding (Limiarização)
     private final Average average_filter = new Average();       // Average filter
-    private final Median median_filter = new Median();          // Median filter
+    private Median median_filter = new Median(Median.USE_SORTING);          // Median filter using sorting algorithm
     private final ColorBalance color_balance = new ColorBalance();
     //private final Sobel sobel = new Sobel();    // Sobel filter
     //private final Negative negative = new Negative();           // Negative transformation

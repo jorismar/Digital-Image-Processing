@@ -16,11 +16,12 @@ import DigitalImageProcess.Tools.Mask;
  */
 public class Average extends DigitalProcess {
     @Override
-    protected int transform(BufferedImage img, int px, int py, Object matx_width) {
-        Integer matrixWH = (Integer) matx_width;
+    protected int transform(BufferedImage img, int px, int py, Object matrixDims) {
+        Integer matrixH = ((int[])matrixDims)[0];
+        Integer matrixW = ((int[])matrixDims)[1];
         
         // Create mask
-        Mask mask = new Mask(matrixWH, matrixWH);
+        Mask mask = new Mask(matrixW, matrixH);
         mask.fillMask(1);
         
         // Apply mask
@@ -29,25 +30,25 @@ public class Average extends DigitalProcess {
     // ----- Calculates number of the processed pixels. ----- //
         
         // Matrix Center
-        int pxC = matrixWH / 2;
-        int pyC = matrixWH / 2;
+        int pxC = matrixW / 2;
+        int pyC = matrixH / 2;
         
         // M(0,0) position
         int px0 = px - pxC;
         int py0 = py - pyC;
         
         // M(n,n) position
-        int pxN = px + matrixWH - pxC - 1;
-        int pyN = py + matrixWH - pyC - 1;
+        int pxN = px + matrixW - pxC - 1;
+        int pyN = py + matrixH - pyC - 1;
         
         // Get number of the processed columns
         int numW;
-        numW = px0 < 0 ? matrixWH + px0 : matrixWH;
+        numW = px0 < 0 ? matrixW + px0 : matrixW;
         numW = pxN >= img.getWidth() ? numW - (pxN - (img.getWidth() - 1)) : numW;
         
         // Get number of the processed lines
         int numH;
-        numH = py0 < 0 ? matrixWH + py0 : matrixWH;
+        numH = py0 < 0 ? matrixH + py0 : matrixH;
         numH = pyN >= img.getHeight() ? numH - (pyN - (img.getHeight() - 1)) : numH;
         
         // Get the number of processed pixels

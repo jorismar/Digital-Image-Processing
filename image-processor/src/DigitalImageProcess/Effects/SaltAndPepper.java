@@ -25,12 +25,11 @@ public class SaltAndPepper extends DigitalProcess {
         // Copy image
         for(int y = 0; y < img.getHeight(); y++)
             for(int x = 0; x < img.getWidth(); x++)
-                DigitalProcess.TEMP_IMAGE.setRGB(x, y, img.getRGB(x, y));
+                DigitalProcess.processedImage.setRGB(x, y, img.getRGB(x, y));
         
         for(int i = 0; i < px_num; i++) {
             // Apply salt
-            this.transform(
-                DigitalProcess.TEMP_IMAGE,    
+            this.transform(DigitalProcess.processedImage,    
                 generator.nextInt(img.getWidth()),  // x
                 generator.nextInt(img.getHeight()), // y
                 255                                 // color (white)
@@ -38,14 +37,14 @@ public class SaltAndPepper extends DigitalProcess {
 /*            
             // Apply pepper
             this.transform(
-                DigitalProcess.TEMP_IMAGE,    
+                DigitalProcess.processedImage,    
                 generator.nextInt(img.getWidth()),  // x
                 generator.nextInt(img.getHeight()), // y
                 0                                   // color (white)
             );*/
         }
         
-        return DigitalProcess.TEMP_IMAGE;
+        return DigitalProcess.processedImage;
     }
     
     @Override

@@ -1,7 +1,9 @@
 package Application;
 
 
+import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -66,14 +68,21 @@ public class OpenWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void window_open_fileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_window_open_fileActionPerformed
-        if(!evt.getActionCommand().equals("CancelSelection")) {
-            ApplicationWindow.window_application.openImageFile(this.window_open_file.getSelectedFile());
-            ApplicationWindow.current_open_dir = this.window_open_file.getCurrentDirectory();
+        if(evt.getActionCommand().equals("CancelSelection")) {
+            this.window_open_file.setSelectedFile(null);
+            //ApplicationWindow.window_application.openImageFile(this.window_open_file.getSelectedFile());
+            //ApplicationWindow.current_open_dir = this.window_open_file.getCurrentDirectory();
+        } else {
+            
         }
         
-        this.setVisible(false);
+        //this.setVisible(false);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_window_open_fileActionPerformed
 
+    public JFileChooser getFileChooser() {
+        return this.window_open_file;
+    }
     /**
      * @param args the command line arguments
      */

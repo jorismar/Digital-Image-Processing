@@ -13,21 +13,34 @@ import java.awt.image.BufferedImage;
  */
 
 public abstract class DigitalProcess {
-    public static BufferedImage TEMP_IMAGE = null;
+    public static long elapsedTime = 0;
+    public static BufferedImage processedImage = null;
     
     public BufferedImage apply(BufferedImage img, Object arg) {
-        if(DigitalProcess.TEMP_IMAGE == null)
-            DigitalProcess.TEMP_IMAGE = new BufferedImage(
+        // Start a new image
+        if(DigitalProcess.processedImage == null)
+            DigitalProcess.processedImage = new BufferedImage(
                 img.getWidth(), 
                 img.getHeight(), 
                 img.getType()
             );
         
+        // Gets start operation time
+        long startOperationTime = System.nanoTime();
+        
+        // Apply operation to image
         for(int y = 0; y < img.getHeight(); y++)
             for(int x = 0; x < img.getWidth(); x++)
-                DigitalProcess.TEMP_IMAGE.setRGB(x, y, this.transform(img, x, y, arg));
+                DigitalProcess.processedImage.setRGB(x, y, this.transform(img, x, y, arg));
         
-        return DigitalProcess.TEMP_IMAGE;
+        // Gets end operation time
+        long endOperationTime = System.nanoTime();
+        
+        // Update elapsed time
+        DigitalProcess.elapsedTime = endOperationTime - startOperationTime;
+        
+        // Return the processed image
+        return DigitalProcess.processedImage;
     }
     
     protected abstract int transform(BufferedImage img, int px, int py, Object arg);

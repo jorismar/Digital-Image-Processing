@@ -213,7 +213,6 @@ public class MaskWindow extends javax.swing.JFrame {
                     mask.setValue(x, y, Integer.parseInt(values[x][y].getText()));
             
             ApplicationWindow.window_application.applyMask(mask);
-            ApplicationWindow.window_application.customFilterButtonSwitch();
             this.setVisible(false);
         } catch(NumberFormatException ex) {
             this.setVisible(false);
@@ -223,7 +222,6 @@ public class MaskWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_button_okActionPerformed
 
     private void button_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_cancelActionPerformed
-        ApplicationWindow.window_application.customFilterButtonSwitch();
         this.setVisible(false);
     }//GEN-LAST:event_button_cancelActionPerformed
 

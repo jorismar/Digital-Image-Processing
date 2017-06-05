@@ -41,7 +41,7 @@ public class Monitor {
             }
         
         // Threshold
-        int threshold = 100;
+        int threshold = 30;
         
         // Start motion detection manager
         MotionDetection detector = new MotionDetection(threshold);

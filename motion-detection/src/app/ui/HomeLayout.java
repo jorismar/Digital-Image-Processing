@@ -239,7 +239,7 @@ public class HomeLayout extends javax.swing.JFrame {
             }
         });
 
-        button_video_file.setText("AVI Video File");
+        button_video_file.setText("Video File");
         button_video_file.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_video_fileActionPerformed(evt);

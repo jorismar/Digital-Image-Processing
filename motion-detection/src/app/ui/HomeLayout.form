@@ -175,7 +175,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="button_video_file">
           <Properties>
-            <Property name="text" type="java.lang.String" value="AVI Video File"/>
+            <Property name="text" type="java.lang.String" value="Video File"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_video_fileActionPerformed"/>

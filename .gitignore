@@ -1,3 +1,6 @@
 /image-processor/build/
 /image-processor/build.xml
 /image-processor/dist/
+/motion-detection/build/
+/motion-detection/build.xml
+/motion-detection/dist/
